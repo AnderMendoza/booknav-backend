@@ -48,6 +48,10 @@ export default class ExpressServer {
         ignorePaths: /.*\/spec(\/|$)/,
       })
     );
+
+    app.use(function (error, req, res, next) {
+      res.status(500).json({ error: "Failed to process request" });
+    });
   }
 
   router(routes) {

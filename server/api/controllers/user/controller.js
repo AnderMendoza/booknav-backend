@@ -11,6 +11,34 @@ export class Controller {
   //   authToken = process.env.AUTH_TOKEN;
   //   client = require("twilio")(accountSid, authToken);
 
+  async login(req, res) {
+    const email = req.body.email;
+    const password = req.body.password;
+    const phone = req.body.phone;
+
+    const user = await User.findOne({ $or: [{ email }, { phone }] }).catch(
+      (err) => {
+        res.status(400).send({
+          message: "Incorrect Email or password",
+        });
+      }
+    );
+
+    if (user === null) {
+      return res.status(400).send({
+        message: "Incorrect Email or password",
+      });
+    } else {
+      if (user.validPassword(password)) {
+        return createToken({ email, role: user.role, phone }, user._id, res);
+      } else {
+        return res.status(400).send({
+          message: "Incorrect Email or password",
+        });
+      }
+    }
+  }
+
   async register(req, res) {
     try {
       const { email, password, title, phone, role } = req.body;
@@ -35,65 +63,32 @@ export class Controller {
     }
   }
 
-  async login(req, res) {
-    const email = req.body.email;
-    const password = req.body.password;
-    const phone = req.body.phone;
-
-    const user = await User.findOne({ $or: [{ email }, { phone }] }).catch(
-      (err) => {
-        console.log(err);
-        res.status(400).send({
-          message: "Incorrect Email or password",
-        });
-      }
-    );
-
-    if (user === null) {
-      return res.status(400).send({
-        message: "Incorrect Email or password",
-      });
-    } else {
-      if (user.validPassword(password)) {
-        return createToken({ email, role: user.role, phone }, user._id, res);
-      } else {
-        return res.status(400).send({
-          message: "Incorrect Email or password",
-        });
-      }
-    }
-  }
   async logout(req, res) {
-    const token = await Token.findById(req.cookies.refreshTokenID).catch(
-      (err) => err.message
-    );
-
-    await Token.deleteMany({ _userId: token._userId });
-
-    res
-      .clearCookie("refreshToken")
-      .clearCookie("accessToken")
-      .clearCookie("authSession")
-      .clearCookie("refreshTokenID")
-      .send("logout");
+    try {
+      await Token.deleteMany({ _userId: req.user.userId });
+    } catch (error) {
+      return res.status(400).send({
+        message: "Error deleting token",
+      });
+    }
+    res.status(200).send({ status: true });
   }
 
   async me(req, res) {
-    if (req.cookies.refreshTokenID) {
-      const token = await Token.findById(req.cookies?.refreshTokenID)
-        .populate("_userId")
-        .catch((err) => res.status(400).send({ message: err.message }));
+    if (req.token && req.user) {
+      const user = await User.findById(req.user.userId);
 
-      if (token._userId) {
-        const { _id, email, role, phone, title } = token._userId;
-        return res.status(200).send({
-          _id,
-          email,
-          role,
-          phone,
-          title,
-        });
-      }
+      if (!user) return res.status(400).send({ error: "Not found" });
+
+      const { id, email, role, phone, title } = user;
+
+      return res.status(200).send({
+        id,
+        email,
+        role,
+        phone,
+        title,
+      });
     } else {
       return res.status(400).send({
         message: "No user found",

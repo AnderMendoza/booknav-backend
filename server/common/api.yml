@@ -6,105 +6,9 @@ info:
 servers:
   - url: /api/v1
 tags:
-  - name: Examples
-    description: Simple example endpoints
   - name: Specification
     description: The swagger API specification
 paths:
-  /examples:
-    get:
-      tags:
-        - Examples
-      description: Fetch all examples
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    post:
-      tags:
-        - Examples
-      description: Create a new example
-      requestBody:
-        description: an example
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ExampleBody"
-        required: true
-      responses:
-        201:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /examples/{id}:
-    get:
-      tags:
-        - Examples
-      parameters:
-        - name: id
-          in: path
-          description: The id of the example to retrieve
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /spec:
-    get:
-      tags:
-        - Specification
-      responses:
-        200:
-          description: Return the API specification
-          content: {}
   /user/login:
     post:
       tags:
@@ -153,7 +57,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
   /user/verify:
     get:
       tags:
@@ -179,7 +82,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
   /user/refresh:
-    get:
+    post:
       tags:
         - Refresh token
       description: Refresh token user
@@ -205,7 +108,7 @@ paths:
   /user/logout:
     get:
       tags:
-        - loout User
+        - Logout User
       description: Logout user
       responses:
         200:
@@ -298,220 +201,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /doctor:
-    post:
-      tags:
-        - Add doctor
-      description: Add doc
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    patch:
-      tags:
-        - Update doctor
-      description: Update doc
-      responses:
-        200:
-          description: Update the doctor with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /doctor/{id}:
-    get:
-      tags:
-        - Doctor get
-      parameters:
-        - name: id
-          in: path
-          description: The id of the doctor to retrieve
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Return the doctor with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    delete:
-      tags:
-        - Doctor delete
-      parameters:
-        - name: id
-          in: path
-          description: The id of the doctor to delete
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Return the deleted doctor with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /task:
-    post:
-      tags:
-        - Add task
-      description: Add doc
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    patch:
-      tags:
-        - Updatetask
-      description: Update doc
-      responses:
-        200:
-          description: Update the task with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /task/{id}:
-    get:
-      tags:
-        - task get
-      parameters:
-        - name: id
-          in: path
-          description: The id of the task to retrieve
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Return the task with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    delete:
-      tags:
-        - task delete
-      parameters:
-        - name: id
-          in: path
-          description: The id of the task to delete
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Return the deleted task with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
 components:
   schemas:
     Example:

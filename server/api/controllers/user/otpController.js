@@ -63,15 +63,16 @@ export class OtpController {
   }
 
   async refresh(req, res) {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.body.refreshToken;
+
     if (!refreshToken)
       return res
         .status(403)
         .send({ message: "Refresh token not found, login again" });
 
-    const refreshTokens = await Token.find();
-    console.log({ refreshToken });
-    if (!refreshTokens.find((rf) => rf.token === refreshToken))
+    const rf = await Token.findOne({ token: refreshToken });
+
+    if (!rf)
       return res
         .status(403)
         .send({ message: "Refresh token blocked, login again" });
@@ -79,20 +80,9 @@ export class OtpController {
     jwt.verify(refreshToken, JWT_REFRESH_TOKEN, (err, phone) => {
       if (!err) {
         const accessToken = jwt.sign({ data: phone }, JWT_AUTH_TOKEN, {
-          expiresIn: "30m",
+          expiresIn: "15m",
         });
-        return res
-          .status(200)
-          .cookie("accessToken", accessToken, {
-            expires: new Date(new Date().getTime() + 30 * 1000),
-            sameSite: "strict",
-            httpOnly: true,
-          })
-          .cookie("authSession", true, {
-            expires: new Date(new Date().getTime() + 30 * 1000),
-            sameSite: "strict",
-          })
-          .send({ previousSessionExpired: true, success: true });
+        return res.status(200).send({ accessToken });
       } else {
         return res.status(403).send({
           success: false,

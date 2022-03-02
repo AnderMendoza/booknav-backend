@@ -14,7 +14,7 @@ export default express
   )
   .post("/otp", OtpController.otp)
   .get("/verify", OtpController.verify)
-  .get("/refresh", OtpController.refresh)
-  .get("/logout", controller.logout)
+  .post("/refresh", OtpController.refresh)
+  .get("/logout", isAuthenticated, controller.logout)
   .get("/me", isAuthenticated, controller.me)
   .get("/all", isAuthenticated, isAdmin, controller.getAll);
