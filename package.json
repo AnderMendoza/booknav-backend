@@ -1,7 +1,7 @@
 {
-  "name": "supadoc-backend",
+  "name": "booknav-backend",
   "version": "1.0.0",
-  "description": "Supadoc api",
+  "description": "booknav api",
   "main": "index.js",
   "scripts": {
     "build": "babel server --out-dir dist --delete-dir-on-start --source-maps inline --copy-files",
