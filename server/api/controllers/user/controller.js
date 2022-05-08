@@ -17,7 +17,7 @@ export class Controller {
     const phone = req.body.phone;
 
     const user = await User.findOne({ $or: [{ email }, { phone }] }).catch(
-      (err) => {
+      () => {
         res.status(400).send({
           message: "Incorrect Email or password",
         });
@@ -39,6 +39,32 @@ export class Controller {
     }
   }
 
+  async googleSignin(req, res) {
+    try {
+      const user = req.body.user;
+      const { email, phone, title } = user;
+
+      const isRegistered = await User.findOne({ $or: [{ email }, { phone }] });
+      const role = isRegistered.role;
+      if (isRegistered) {
+        return createToken({ email, role, phone }, isRegistered._id, res);
+      } else {
+        const newUser = new User({
+          email,
+          phone,
+          title,
+          role,
+        });
+        await newUser.save();
+        return createToken({ email, role, phone }, newUser._id, res);
+      }
+    } catch (err) {
+      return res.status(400).send({
+        message: "Failed to login",
+      });
+    }
+  }
+
   async register(req, res) {
     try {
       const { email, password, title, phone, role } = req.body;
@@ -49,7 +75,7 @@ export class Controller {
       newUser.email = email;
       newUser.phone = phone;
       newUser.password = password;
-      newUser.role = role ? role : "marketing";
+      newUser.role = role ? role : "user";
       newUser.setPassword(password);
 
       await User.create(newUser);

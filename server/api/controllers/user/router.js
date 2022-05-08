@@ -7,6 +7,7 @@ import isAdmin from "../../middlewares/isAdmin";
 export default express
   .Router()
   .post("/login", controller.login)
+  .post("/google-signin", controller.login)
   .post(
     "/register",
     // isAuthenticated,

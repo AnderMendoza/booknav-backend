@@ -201,6 +201,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /user/google-signin:
+    post:
+      tags:
+        - Google signin
+      description: Google signin
+      responses:
+        200:
+          description: Return login access and refresh token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Example"
+        4XX:
+          description: Incorrect post data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        5XX:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     Example:
