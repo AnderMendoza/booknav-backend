@@ -6,7 +6,7 @@ import server from "../server";
 chai.use(chaiHttp);
 
 describe("NaavTypes", () => {
-  it("should register user, login user, check token and create a naavType", async () => {
+  it("should register user, login user, check token and create a naavType, check if its created , update and delete", async () => {
     chai
       .request(server)
       .post("/api/v1/users/register")
@@ -24,7 +24,6 @@ describe("NaavTypes", () => {
             password: "123456789",
           })
           .end((err, res) => {
-            console.log("Test user logged in");
             res.body.should.have.property("accessToken");
             res.body.should.have.property("refreshToken");
 
@@ -47,6 +46,35 @@ describe("NaavTypes", () => {
                 res.body.should.have.property("width");
                 res.body.should.have.property("length");
                 res.body.should.have.property("capacity");
+              });
+
+            chai
+              .request(server)
+              .get("/api/v1/naavTypes")
+              .set("Authorization", `Bearer ${token}`)
+              .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a("array");
+                res.body.length.should.be.eql(1);
+              });
+            chai
+              .request(server)
+              .put("/api/v1/naavTypes/1")
+              .set("Authorization", `Bearer ${token}`)
+              .send({
+                name: "Test updated",
+                image: "Test updated",
+                width: "Test updated",
+                length: "Test updated",
+                capacity: "Test updated",
+              })
+              .end((err, res) => {
+                res.should.have.status(200);
+                res.body.name.should.equal("Test updated");
+                res.body.image.should.equal("Test updated");
+                res.body.width.should.equal("Test updated");
+                res.body.length.should.equal("Test updated");
+                res.body.capacity.should.equal("Test updated");
               });
           });
       });
