@@ -75,7 +75,7 @@ export class Controller {
       newUser.email = email;
       newUser.phone = phone;
       newUser.password = password;
-      newUser.role = role ? role : "user";
+      newUser.role = role ? (role === "naavik" ? "naavik" : "user") : "user";
       newUser.setPassword(password);
 
       await User.create(newUser);

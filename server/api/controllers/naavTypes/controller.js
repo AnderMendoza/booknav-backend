@@ -17,7 +17,7 @@ export class Controller {
         capacity: req.body?.capacity,
       });
       await newBoatType.save();
-      return res.status(201).send(newBoatType);
+      return res.status(200).send(newBoatType);
     } catch (error) {
       return res.status(400).send(error);
     }

@@ -9,7 +9,7 @@ tags:
   - name: Specification
     description: The swagger API specification
 paths:
-  /user/login:
+  /users/login:
     post:
       tags:
         - Login
@@ -33,7 +33,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/otp:
+  /users/otp:
     post:
       tags:
         - Login OTP
@@ -57,7 +57,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/verify:
+  /users/verify:
     get:
       tags:
         - Verify User
@@ -81,7 +81,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/refresh:
+  /users/refresh:
     post:
       tags:
         - Refresh token
@@ -105,7 +105,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/logout:
+  /users/logout:
     get:
       tags:
         - Logout User
@@ -129,7 +129,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/all:
+  /users/all:
     get:
       tags:
         - Give all users
@@ -153,7 +153,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/me:
+  /users/me:
     get:
       tags:
         - Logged in User
@@ -177,7 +177,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/register:
+  /users/register:
     post:
       tags:
         - Register
@@ -201,7 +201,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/google-signin:
+  /users/google-signin:
     post:
       tags:
         - Google signin
@@ -221,6 +221,124 @@ paths:
                 $ref: "#/components/schemas/Error"
         5XX:
           description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /naavTypes/all:
+    get:
+      tags:
+        - Give all naavTypes
+      description: Return all naavTypes
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Example"
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /naavTypes/{id}:
+    get:
+      tags:
+        - Give naavType
+      description: Return naavType
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Example"
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+        - Update naavType
+      description: Update naavType
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Example"
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - Delete naavType
+      description: Delete naavType
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Example"
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /naavTypes:
+    post:
+      tags:
+        - Create naavType
+      description: Create naavType
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Example"
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        5XX:
+          description: Example not found
           content:
             application/json:
               schema:
