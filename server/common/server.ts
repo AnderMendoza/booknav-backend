@@ -8,6 +8,7 @@ import l from './logger';
 
 import errorHandler from '../api/middlewares/error.handler';
 import * as OpenApiValidator from 'express-openapi-validator';
+import mongoose from 'mongoose';
 
 const app = express();
 
@@ -58,5 +59,12 @@ export default class ExpressServer {
     http.createServer(app).listen(port, welcome(port));
 
     return app;
+  }
+  connectDB(url = process.env.MONGODB_URI || 'mongodb://localhost/test') {
+    mongoose.connect(url);
+    mongoose.connection.on('connected', () => {
+      console.log('Connected to mongodb');
+    });
+    return this;
   }
 }
