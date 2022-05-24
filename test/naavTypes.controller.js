@@ -1,23 +1,27 @@
+import request from "supertest";
 import chai from "chai";
-import chaiHttp from "chai-http";
-
 import server from "../server";
 
-chai.use(chaiHttp);
+const expect = chai.expect;
 
 describe("NaavTypes", () => {
   it("should register user, login user, check token and create a naavType, check if its created , update and delete", async () => {
-    chai
-      .request(server)
+    request(server)
       .post("/api/v1/users/register")
       .send({
         title: "Test",
         phone: "123456789",
         email: "test@test.com",
+        password: "123456789",
       })
+      .expect(201)
+      .then((res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body.message).to.equal("User created successfully");
+      })
+      // .catch((err) => console.log(err))
       .end(() => {
-        chai
-          .request(server)
+        request(server)
           .post("/api/v1/users/login")
           .send({
             email: "test@test.com",
@@ -28,8 +32,8 @@ describe("NaavTypes", () => {
             res.body.should.have.property("refreshToken");
 
             const token = res.body.accessToken;
-            chai
-              .request(server)
+
+            request(server)
               .post("/api/v1/naavTypes")
               .set("Authorization", `Bearer ${token}`)
               .send({
@@ -48,8 +52,7 @@ describe("NaavTypes", () => {
                 res.body.should.have.property("capacity");
               });
 
-            chai
-              .request(server)
+            request(server)
               .get("/api/v1/naavTypes")
               .set("Authorization", `Bearer ${token}`)
               .end((err, res) => {
@@ -57,8 +60,8 @@ describe("NaavTypes", () => {
                 res.body.should.be.a("array");
                 res.body.length.should.be.eql(1);
               });
-            chai
-              .request(server)
+
+            request(server)
               .put("/api/v1/naavTypes/1")
               .set("Authorization", `Bearer ${token}`)
               .send({
