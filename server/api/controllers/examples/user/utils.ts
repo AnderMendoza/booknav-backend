@@ -11,7 +11,7 @@ export const createToken = async (
   userId: string,
   res: Response
 ) => {
-  payload.data.userId = userId;
+  payload.data = userId;
   const accessToken = jwt.sign(payload, JWT_AUTH_TOKEN, {
     expiresIn: '15m',
   });
@@ -41,9 +41,10 @@ export const createToken = async (
 
 export const generateOtp = (phone: string) => {
   const otp = Math.floor(100000 + Math.random() * 900000);
-  const ttl = 2 * 60 * 1000;
+  const ttl = 10 * 60 * 1000;
   const expires = Date.now() + ttl;
   const data = `${phone}.${otp}.${expires}`;
+
   const hash = crypto
     .createHmac('sha256', smsKey as 'BinaryLike | KeyObject')
     .update(data)

@@ -44,17 +44,17 @@ export class OtpController {
       .digest('hex');
 
     if (newCalculatedHash === hashValue) {
-      console.log('user confirmed');
-      const user = await User.findOne({ phone }).catch(() =>
-        res.status(400).send({ message: 'Invalid OTP' })
-      );
-      console.log(user);
-      return createToken({ phone, role: user.role }, user._id, res);
+      try {
+        const user = await User.findOne({ phone });
+        return createToken({ phone, role: user.role }, user._id, res);
+      } catch (error) {
+        return res.status(400).send({ message: 'Invalid OTP' });
+      }
     }
-    console.log('not authenticated');
+
     return res
       .status(400)
-      .send({ verification: false, message: 'Incorrect OTP' });
+      .send({ verification: false, message: 'Invalid OTP' });
   }
 
   async refresh(req: Request, res: Response) {
