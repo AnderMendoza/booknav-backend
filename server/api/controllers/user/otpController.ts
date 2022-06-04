@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import Token from '../../../models/Token';
-import User from '../../../models/User';
+import Token from '../../models/Token';
+import User from '../../models/User';
 import { createToken, generateOtp } from './utils';
 import { JWT_AUTH_TOKEN, JWT_REFRESH_TOKEN } from './userController';
 

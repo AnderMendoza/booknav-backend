@@ -1,5 +1,5 @@
-import User from '../../../models/User';
-import Token from '../../../models/Token';
+import User from '../../models/User';
+import Token from '../../models/Token';
 import { Request, Response } from 'express';
 import UserType from 'types/user';
 import { generateOtp } from './utils';

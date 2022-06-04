@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
-import { JWT_AUTH_TOKEN } from '../controllers/examples/user/userController';
+import { JWT_AUTH_TOKEN } from '../controllers/user/userController';
 
 export default async function isAuthenticated(
   req: Request,

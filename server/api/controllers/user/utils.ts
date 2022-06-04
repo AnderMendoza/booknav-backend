@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import Token from '../../../models/Token';
+import Token from '../../models/Token';
 import { JWT_AUTH_TOKEN, JWT_REFRESH_TOKEN } from './userController';
 import crypto from 'crypto';
 

@@ -1,8 +1,8 @@
 import * as express from 'express';
 import controller from './userController';
 import OtpController from './otpController';
-import isAuthenticated from '../../../middlewares/isAuthenticated';
-import isAdmin from '../../../middlewares/isAdmin';
+import isAuthenticated from '../../middlewares/isAuthenticated';
+import isAdmin from '../../middlewares/isAdmin';
 
 export default express
   .Router()
