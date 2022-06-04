@@ -1,38 +1,66 @@
 openapi: 3.0.1
 info:
-  title: booknav-backend
-  description: booknav api
+  title: booknaav-backend
+  description: backend for booknaav app in typescipt
   version: 1.0.0
 servers:
   - url: /api/v1
 tags:
+  - name: Examples
+    description: Simple example endpoints
   - name: Specification
     description: The swagger API specification
 paths:
-  /users/login:
+  /examples:
+    get:
+      tags:
+        - Examples
+      description: Fetch all examples
+      responses:
+        200:
+          description: Returns all examples
+          content: {}
     post:
       tags:
-        - Login
-      description: login user
+        - Examples
+      description: Create a new example
+      requestBody:
+        description: an example
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExampleBody'
+        required: true
+      responses:
+        200:
+          description: Returns all examples
+          content: {}
+  /examples/{id}:
+    get:
+      tags:
+        - Examples
+      parameters:
+        - name: id
+          in: path
+          description: The id of the example to retrieve
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
+          content: {}
+        404:
           description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          content: {}
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification
+          content: {}
   /users/otp:
     post:
       tags:
@@ -44,43 +72,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Example"
+                $ref: '#/components/schemas/Example'
         4XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         5XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
   /users/verify:
-    get:
+    post:
       tags:
         - Verify User
       description: Verify user
       responses:
-        202:
+        200:
           description: Return the example with the specified id
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Example"
+                $ref: '#/components/schemas/Example'
         4XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         5XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
   /users/refresh:
     post:
       tags:
@@ -92,19 +120,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Example"
+                $ref: '#/components/schemas/Example'
         4XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         5XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
   /users/logout:
     get:
       tags:
@@ -116,19 +144,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Example"
+                $ref: '#/components/schemas/Example'
         4XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         5XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
   /users/all:
     get:
       tags:
@@ -140,19 +168,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Example"
+                $ref: '#/components/schemas/Example'
         4XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         5XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
   /users/me:
     get:
       tags:
@@ -164,19 +192,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Example"
+                $ref: '#/components/schemas/Example'
         4XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         5XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
   /users/register:
     post:
       tags:
@@ -188,161 +216,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Example"
+                $ref: '#/components/schemas/Example'
         4XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         5XX:
           description: Example not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-  /users/google-signin:
-    post:
-      tags:
-        - Google signin
-      description: Google signin
-      responses:
-        200:
-          description: Return login access and refresh token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Incorrect post data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /naavTypes/all:
-    get:
-      tags:
-        - Give all naavTypes
-      description: Return all naavTypes
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /naavTypes/{id}:
-    get:
-      tags:
-        - Give naavType
-      description: Return naavType
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    put:
-      tags:
-        - Update naavType
-      description: Update naavType
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    delete:
-      tags:
-        - Delete naavType
-      description: Delete naavType
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /naavTypes:
-    post:
-      tags:
-        - Create naavType
-      description: Create naavType
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Example"
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
     Example:
@@ -367,3 +254,12 @@ components:
         name:
           type: string
           example: no_stress
+    LoginBody:
+      title: login
+      required:
+        - phone
+      type: string
+      properties:
+        phone:
+          type: string
+          example: +62812341234

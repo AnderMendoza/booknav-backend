@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const tokenSchema = new Schema({
   _userId: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "users",
+    ref: 'users',
   },
   token: {
     type: String,
@@ -18,10 +18,10 @@ const tokenSchema = new Schema({
   },
 });
 
-tokenSchema.virtual("isExpired").get(function () {
+tokenSchema.virtual('isExpired').get(function () {
   return Date.now() >= this.expires;
 });
 
-const Token = mongoose.model("tokens", tokenSchema);
+const Token = mongoose.model('tokens', tokenSchema);
 
 export default Token;
