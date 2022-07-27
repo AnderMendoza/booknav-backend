@@ -46,9 +46,10 @@ export class OtpController {
     if (newCalculatedHash === hashValue) {
       try {
         const user = await User.findOne({ phone });
+        if (!user) throw new Error('Not found');
         return createToken({ phone, role: user.role }, user._id, res);
       } catch (error) {
-        return res.status(400).send({ message: 'Invalid OTP' });
+        return res.status(400).send({ message: 'Please create an account' });
       }
     }
 
