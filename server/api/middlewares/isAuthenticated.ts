@@ -22,14 +22,22 @@ export default async function isAuthenticated(
     const accessToken = bearerToken;
 
     if (accessToken) {
-      jsonwebtoken.verify(accessToken, JWT_AUTH_TOKEN, async (err, payload) => {
-        if (payload) {
-          res.locals.user = payload;
-          next();
-        } else if (err?.message === 'TokenExpiredError') {
-          res.sendStatus(401);
-        } else res.sendStatus(403);
-      });
+      try {
+        jsonwebtoken.verify(
+          accessToken,
+          JWT_AUTH_TOKEN,
+          async (err, payload) => {
+            if (payload) {
+              res.locals.user = payload;
+              next();
+            } else if (err?.message === 'jwt expired') {
+              res.sendStatus(401);
+            } else res.sendStatus(401);
+          }
+        );
+      } catch (error) {
+        res.sendStatus(401);
+      }
     }
   } else res.sendStatus(403);
 }

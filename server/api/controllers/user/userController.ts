@@ -51,20 +51,21 @@ export class Controller {
   }
 
   async me(_req: Request, res: Response) {
-    if (res.locals?.token && res.locals?.user) {
-      const user = await User.findById(res.locals?.user?.data);
-
-      if (!user) return res.status(400).send({ error: 'Not found' });
-
-      const { id, role, phone, title } = user;
-
-      return res.status(200).send({
-        id,
-        role,
-        phone,
-        title,
-      });
-    } else {
+    try {
+      if (res.locals?.token && res.locals?.user) {
+        const user = await User.findById(res.locals?.user?.data.data);
+        if (user) {
+          const { id, role, phone, title } = user;
+          return res.status(200).send({
+            id,
+            role,
+            phone,
+            title,
+          });
+        }
+      }
+      throw new Error('Not authenticated');
+    } catch (error) {
       return res.status(400).send({
         message: 'No user found',
       });

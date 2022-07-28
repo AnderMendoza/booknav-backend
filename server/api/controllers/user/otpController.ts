@@ -63,27 +63,23 @@ export class OtpController {
   }
 
   async refresh(req: Request, res: Response) {
-    const refreshToken = req.body.refreshToken;
+    const refreshToken = req.body.refresh;
 
     const rf = await Token.findOne({ token: refreshToken });
 
-    if (refreshToken && rf)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(refreshToken, JWT_REFRESH_TOKEN, (err: any, phone: any) => {
-        if (!err) {
+    try {
+      if (refreshToken && rf)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        jwt.verify(refreshToken, JWT_REFRESH_TOKEN, (err: any, phone: any) => {
+          if (err) throw new Error('Refresh token expired');
           const accessToken = jwt.sign({ data: phone }, JWT_AUTH_TOKEN, {
             expiresIn: '15m',
           });
           return res.status(200).send({ accessToken });
-        }
-        return res.status(403).send({
-          success: false,
-          message: 'Invalid refresh token',
         });
-      });
-    return res
-      .status(403)
-      .send({ message: 'Refresh token not found, login again' });
+    } catch (error) {
+      res.status(401).send({ message: 'Refresh token expired' });
+    }
   }
 }
 
