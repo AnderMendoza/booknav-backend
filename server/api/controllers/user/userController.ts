@@ -52,7 +52,7 @@ export class Controller {
 
   async me(_req: Request, res: Response) {
     if (res.locals?.token && res.locals?.user) {
-      const user = await User.findById(res.locals?.user?.userId);
+      const user = await User.findById(res.locals?.user?.data);
 
       if (!user) return res.status(400).send({ error: 'Not found' });
 

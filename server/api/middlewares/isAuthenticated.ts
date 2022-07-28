@@ -9,32 +9,27 @@ export default async function isAuthenticated(
 ) {
   const bearerHeader = req.headers['authorization'];
   if (
-    typeof bearerHeader !== 'string' ||
-    !bearerHeader?.split(' ')?.[1] ||
-    bearerHeader === undefined
+    !(
+      typeof bearerHeader !== 'string' ||
+      !bearerHeader?.split(' ')?.[1] ||
+      bearerHeader === undefined
+    )
   ) {
-    return res.status(403).send({ message: 'Not Allowed' });
-  }
-  const bearer = bearerHeader?.split(' ');
-  const bearerToken = bearer[1];
+    const bearer = bearerHeader?.split(' ');
+    const bearerToken = bearer[1];
 
-  res.locals.token = bearerToken;
-  const accessToken = bearerToken;
+    res.locals.token = bearerToken;
+    const accessToken = bearerToken;
 
-  if (accessToken) {
-    jsonwebtoken.verify(accessToken, JWT_AUTH_TOKEN, async (err, payload) => {
-      if (payload) {
-        res.locals.user = payload;
-        next();
-      }
-      if (err?.message === 'TokenExpiredError') {
-        return res.status(401).send({
-          success: false,
-          message: 'Access token expired',
-        });
-      }
-      return res.status(403).send({ err, message: 'User not authenticated' });
-    });
-  }
-  return res.status(403).send({ message: 'Not Allowed' });
+    if (accessToken) {
+      jsonwebtoken.verify(accessToken, JWT_AUTH_TOKEN, async (err, payload) => {
+        if (payload) {
+          res.locals.user = payload;
+          next();
+        } else if (err?.message === 'TokenExpiredError') {
+          res.sendStatus(401);
+        } else res.sendStatus(403);
+      });
+    }
+  } else res.sendStatus(403);
 }

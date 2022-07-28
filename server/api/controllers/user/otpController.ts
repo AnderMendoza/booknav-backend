@@ -10,7 +10,7 @@ const smsKey = process.env.SMS_SECRET_KEY;
 // const twilioNum = process.env.TWILIO_PHONE_NUMBER;
 
 export class OtpController {
-  otp(req: Request, res: Response) {
+  async otp(req: Request, res: Response) {
     const phone = req.body.phone;
     const { otp, fullHash } = generateOtp(phone);
     // client.messages
@@ -23,8 +23,12 @@ export class OtpController {
     //   .catch((err) => console.error(err));
 
     // res.status(200).send({ phone, hash: fullHash, otp });  // this bypass otp via api only for development instead hitting twilio api all the time
+    const user = await User.findOne({ phone });
+    if (!user)
+      return res.status(406).send({ message: 'Please create an account' });
+
     console.log(otp);
-    res.status(200).send({ phone, hash: fullHash }); // Use this way in Production
+    return res.status(200).send({ phone, hash: fullHash }); // Use this way in Production
   }
 
   async verify(req: Request, res: Response) {
@@ -49,7 +53,7 @@ export class OtpController {
         if (!user) throw new Error('Not found');
         return createToken({ phone, role: user.role }, user._id, res);
       } catch (error) {
-        return res.status(400).send({ message: 'Please create an account' });
+        return res.status(406).send({ message: 'Please create an account' });
       }
     }
 
