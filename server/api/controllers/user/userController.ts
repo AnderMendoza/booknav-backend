@@ -39,21 +39,23 @@ export class Controller {
   async logout(_req: Request, res: Response) {
     try {
       await Token.deleteMany({ _userId: res.locals?.user?.userId });
-      res.status(200).send({ status: true });
+
+      return res.status(200).send({ status: true });
     } catch (error) {
       return res.status(400).send({
         message: 'Error deleting token',
       });
     }
-    return res.status(400).send({
-      message: 'Error deleting token',
-    });
   }
 
   async me(_req: Request, res: Response) {
     try {
       if (res.locals?.token && res.locals?.user) {
-        const user = await User.findById(res.locals?.user?.data.data);
+        const userId = res.locals?.user?.data.data
+          ? res.locals?.user?.data.data
+          : res.locals?.user?.data;
+
+        const user = await User.findById(userId);
         if (user) {
           const { id, role, phone, title } = user;
           return res.status(200).send({
