@@ -73,7 +73,7 @@ export class OtpController {
         jwt.verify(refreshToken, JWT_REFRESH_TOKEN, (err: any, phone: any) => {
           if (err) throw new Error('Refresh token expired');
           const accessToken = jwt.sign({ data: phone }, JWT_AUTH_TOKEN, {
-            expiresIn: '15m',
+            expiresIn: process.env.JWT_AUTH_TOKEN_EXPIRY || '15m',
           });
           return res.status(200).send({ accessToken });
         });

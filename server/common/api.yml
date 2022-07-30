@@ -179,6 +179,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /users/update:
+    post:
+      tags:
+        - Update logged in user
+      description: Update logged in user
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/register:
     post:

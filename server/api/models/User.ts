@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'user',
   },
+  picture: {
+    type: String,
+    default: '',
+  },
   hash: String,
   salt: String,
 });

@@ -13,10 +13,10 @@ export const createToken = async (
 ) => {
   payload.data = userId;
   const accessToken = jwt.sign(payload, JWT_AUTH_TOKEN, {
-    expiresIn: '15m',
+    expiresIn: process.env.JWT_AUTH_TOKEN_EXPIRY || '15m',
   });
   const token = jwt.sign(payload, JWT_REFRESH_TOKEN, {
-    expiresIn: '30d',
+    expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRY || '30d',
   });
 
   try {
