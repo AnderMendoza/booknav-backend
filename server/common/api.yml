@@ -332,7 +332,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GhatAddBody'
+              $ref: '#/components/schemas/GhatBody'
         required: true
       responses:
         200:
@@ -420,8 +420,7 @@ components:
         otp:
           type: string
           example: 123456
-
-    GhatAddBody:
+    GhatBody:
       title: ghat add
       required:
         - name
