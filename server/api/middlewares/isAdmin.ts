@@ -17,11 +17,10 @@ export default async function isAdmin(
       async (_err: any, payload: any) => {
         if (payload?.data?.role) {
           const role = payload.data.role;
-
           if (role === 'admin') next();
         }
-        return res.status(403).send({ message: 'Not Allowed' });
+        res.sendStatus(403);
       }
     );
-  return res.status(403).send({ message: 'Not Allowed , Not token sent' });
+  res.sendStatus(403);
 }

@@ -245,6 +245,55 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /ghat/:id:
+    get:
+      tags:
+        - Ghat
+      description: Return ghat with the specified id
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ghat/all:
+    get:
+      tags:
+        - Ghat
+      description: Return all ghat
+      responses:
+        200:
+          description: Return all ghat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
     Example:
