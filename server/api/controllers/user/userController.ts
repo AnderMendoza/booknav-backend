@@ -36,6 +36,7 @@ export class Controller {
 
       return res.status(200).send({ phone, hash: fullHash, otp }); // fix production
     } catch (err) {
+      console.log(err);
       return res.status(400).send({
         message: 'Failed to add new User',
       });
