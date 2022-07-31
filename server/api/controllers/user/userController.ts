@@ -33,9 +33,8 @@ export class Controller {
       await User.create(newUser);
 
       const { otp, fullHash } = generateOtp(phone);
-      console.log(otp);
 
-      return res.status(200).send({ phone, hash: fullHash });
+      return res.status(200).send({ phone, hash: fullHash, otp }); // fix production
     } catch (err) {
       return res.status(400).send({
         message: 'Failed to add new User',

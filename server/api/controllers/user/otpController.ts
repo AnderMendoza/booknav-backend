@@ -27,7 +27,7 @@ export class OtpController {
     if (!user)
       return res.status(406).send({ message: 'Please create an account' });
 
-    return res.status(200).send({ phone, hash: fullHash, otp }); // this bypass otp via api only for development instead hitting twilio api all the time
+    return res.status(200).send({ phone, hash: fullHash, otp }); // fix production // this bypass otp via api only for development instead hitting twilio api all the time
     // return res.status(200).send({ phone, hash: fullHash }); // Use this way in Production
   }
 
