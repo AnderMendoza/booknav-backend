@@ -17,10 +17,12 @@ export default async function isAdmin(
       async (_err: any, payload: any) => {
         if (payload?.data?.role) {
           const role = payload.data.role;
+          console.log(payload.data);
           if (role === 'admin') next();
+        } else {
+          res.sendStatus(403);
         }
-        res.sendStatus(403);
       }
     );
-  res.sendStatus(403);
+  else res.sendStatus(403);
 }

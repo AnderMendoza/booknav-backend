@@ -6,6 +6,12 @@ const Ghat = new Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+  },
+  picture: {
+    type: String,
+  },
   location: {
     type: {
       lat: String,

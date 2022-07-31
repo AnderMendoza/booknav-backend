@@ -5,5 +5,7 @@ import GhatController from './ghatController';
 
 export default express
   .Router()
-  .get('/:id', isAuthenticated, isAdmin, GhatController.getById)
-  .get('/all', isAuthenticated, isAdmin, GhatController.getAll);
+  .get('/:id', isAuthenticated, GhatController.getById)
+  .put('/:id', isAuthenticated, isAdmin, GhatController.update)
+  .get('/', isAuthenticated, GhatController.getAll)
+  .post('/', isAuthenticated, isAdmin, GhatController.add);

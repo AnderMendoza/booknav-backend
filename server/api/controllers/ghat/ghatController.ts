@@ -19,6 +19,25 @@ export class GhatController {
       return res.status(400).send({ message: 'Ghat not found' });
     }
   }
+  async add(req: Request, res: Response) {
+    try {
+      const ghat = await Ghat.create(req.body);
+      return res.json(ghat);
+    } catch (error) {
+      return res.status(400).send({ message: 'Unable to add ghat' });
+    }
+  }
+  async update(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const ghat = await Ghat.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
+      return res.json(ghat);
+    } catch (error) {
+      return res.status(400).send({ message: 'Unable to update ghat' });
+    }
+  }
 }
 
 export default new GhatController();

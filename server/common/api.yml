@@ -269,7 +269,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /ghat/all:
+    put:
+      tags:
+        - Ghat
+      description: Update ghat with the specified id
+      requestBody:
+        description: Update ghat with the specified id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GhatBody'
+        required: true
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ghat:
     get:
       tags:
         - Ghat
@@ -277,6 +307,36 @@ paths:
       responses:
         200:
           description: Return all ghat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Ghat
+      description: Create ghat
+      requestBody:
+        description: Create ghat
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GhatAddBody'
+        required: true
+      responses:
+        200:
+          description: Return the example with the specified id
           content:
             application/json:
               schema:
@@ -360,3 +420,29 @@ components:
         otp:
           type: string
           example: 123456
+
+    GhatAddBody:
+      title: ghat add
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: no_stress
+        description:
+          type: string
+          example: no_stress
+        picture:
+          type: string
+          format: binary
+          example: picture
+        location:
+          type: object
+          properties:
+            lat:
+              type: number
+              example: -6.914744
+            lng:
+              type: number
+              example: 107.609810
