@@ -1,7 +1,7 @@
 import User from '../../models/User';
 import Token from '../../models/Token';
 import { Request, Response } from 'express';
-import UserType from 'types/user';
+import UserType from 'server/types/user';
 import { generateOtp } from './utils';
 import { v2 as cloudinary } from 'cloudinary';
 
