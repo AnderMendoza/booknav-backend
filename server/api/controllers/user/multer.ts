@@ -14,7 +14,6 @@ const upload = multer(multerOpts);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function checkFileType(file: Express.Multer.File, cb: any) {
-  console.log(file);
   // Allowed ext
   const filetypes = /gif|jpe?g|tiff?|png|webp|bmp/;
   // Check ext

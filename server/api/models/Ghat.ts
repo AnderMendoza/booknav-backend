@@ -1,6 +1,16 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+const LocationSchema = new Schema({
+  lat: {
+    type: Number,
+    required: true,
+  },
+  lng: {
+    type: Number,
+    required: true,
+  },
+});
 const Ghat = new Schema({
   title: {
     type: String,
@@ -12,12 +22,7 @@ const Ghat = new Schema({
   picture: {
     type: String,
   },
-  location: {
-    type: {
-      lat: String,
-      lng: String,
-    },
-  },
+  location: LocationSchema,
 });
 
 const Token = mongoose.model('ghat', Ghat);
