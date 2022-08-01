@@ -3,17 +3,11 @@ import Token from '../../models/Token';
 import { Request, Response } from 'express';
 import UserType from 'server/types/user';
 import { generateOtp } from './utils';
-import { v2 as cloudinary } from 'cloudinary';
+import cloudinary from '../../middlewares/cloudinary';
 
 // const twilioNum = process.env.TWILIO_PHONE_NUMBER;
 export const JWT_AUTH_TOKEN = process.env.JWT_AUTH_TOKEN || '';
 export const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN || '';
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 export class Controller {
   //   accountSid = process.env.ACCOUNT_SID;
@@ -83,7 +77,6 @@ export class Controller {
         : res.locals?.user?.data;
 
       const user = await User.findById(userId);
-      console.log(req.file?.path);
 
       if (user) {
         user.title = title;

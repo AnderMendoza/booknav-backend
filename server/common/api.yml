@@ -109,6 +109,8 @@ paths:
                 $ref: '#/components/schemas/Error'
   /users/logout:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Logout User
       description: Logout user
@@ -133,6 +135,8 @@ paths:
                 $ref: '#/components/schemas/Error'
   /users/all:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Give all users
       description: Return all users
@@ -157,6 +161,8 @@ paths:
                 $ref: '#/components/schemas/Error'
   /users/me:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Logged in User
       description: LoggedIn user
@@ -181,6 +187,8 @@ paths:
                 $ref: '#/components/schemas/Error'
   /users/update:
     post:
+      security:
+        - bearerAuth: []
       tags:
         - Update logged in user
       description: Update logged in user
@@ -188,11 +196,8 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                picture:
-                  type: string
-                  format: binary
+              $ref: '#/components/schemas/UpdateUserBody'
+
       responses:
         200:
           description: Return the example with the specified id
@@ -245,8 +250,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /ghat/:id:
+  /ghat/{id}:
     get:
+      parameters:
+        - in: path
+          name: ghatId
+          schema:
+            type: string
+          required: true
+          description: ID of the ghat to get
+      security:
+        - bearerAuth: []
       tags:
         - Ghat
       description: Return ghat with the specified id
@@ -270,16 +284,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     put:
+      parameters:
+        - in: path
+          name: ghatId
+          schema:
+            type: string
+          required: true
+          description: ID of the ghat to update
+      security:
+        - bearerAuth: []
       tags:
         - Ghat
       description: Update ghat with the specified id
       requestBody:
         description: Update ghat with the specified id
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/GhatBody'
-        required: true
       responses:
         200:
           description: Return the example with the specified id
@@ -301,6 +323,8 @@ paths:
                 $ref: '#/components/schemas/Error'
   /ghat:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Ghat
       description: Return all ghat
@@ -324,16 +348,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
+      security:
+        - bearerAuth: []
       tags:
         - Ghat
       description: Create ghat
       requestBody:
         description: Create ghat
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/GhatBody'
-        required: true
       responses:
         200:
           description: Return the example with the specified id
@@ -355,6 +380,12 @@ paths:
                 $ref: '#/components/schemas/Error'
 
 components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     Example:
       type: object
@@ -368,6 +399,19 @@ components:
     Error:
       type: object
       additionalProperties: true
+
+    UpdateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: example 3
+        phone:
+          type: string
+          example: example 3
+        picture:
+          type: string
+          example: example 3
 
     ExampleBody:
       title: example
@@ -420,13 +464,24 @@ components:
         otp:
           type: string
           example: 123456
+
+    Location:
+      type: object
+      properties:
+        lat:
+          type: number
+          example: -6.2
+        lng:
+          type: number
+          example: 106.8
+
     GhatBody:
       title: ghat add
       required:
-        - name
+        - title
       type: object
       properties:
-        name:
+        title:
           type: string
           example: no_stress
         description:
@@ -437,11 +492,4 @@ components:
           format: binary
           example: picture
         location:
-          type: object
-          properties:
-            lat:
-              type: number
-              example: -6.914744
-            lng:
-              type: number
-              example: 107.609810
+          $ref: '#/components/schemas/Location'
