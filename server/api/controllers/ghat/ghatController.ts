@@ -62,6 +62,15 @@ export class GhatController {
       return res.status(400).send({ message: 'Unable to update ghat' });
     }
   }
+  async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const ghat = await Ghat.findByIdAndDelete(id);
+      return res.json(ghat);
+    } catch (error) {
+      return res.status(400).send({ message: 'Unable to delete ghat' });
+    }
+  }
 }
 
 export default new GhatController();

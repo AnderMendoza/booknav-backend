@@ -11,7 +11,7 @@ const LocationSchema = new Schema({
     required: true,
   },
 });
-const Ghat = new Schema({
+const ghatSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -25,6 +25,6 @@ const Ghat = new Schema({
   location: LocationSchema,
 });
 
-const Token = mongoose.model('ghat', Ghat);
+const Ghat = mongoose.model('ghat', ghatSchema);
 
-export default Token;
+export default Ghat;
