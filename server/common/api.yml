@@ -254,7 +254,7 @@ paths:
     get:
       parameters:
         - in: path
-          name: ghatId
+          name: id
           schema:
             type: string
           required: true
@@ -286,7 +286,7 @@ paths:
     put:
       parameters:
         - in: path
-          name: ghatId
+          name: id
           schema:
             type: string
           required: true
@@ -302,6 +302,38 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/GhatBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the ghat to delete
+      security:
+        - bearerAuth: []
+      tags:
+        - Ghat
+      description: Delete ghat with the specified id
       responses:
         200:
           description: Return the example with the specified id
@@ -359,6 +391,168 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/GhatBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /boat-type:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - BoatType
+      description: Return all boat type
+      responses:
+        200:
+          description: Return all boat type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - BoatType
+      description: Create boat type
+      requestBody:
+        description: Create boat type
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoatTypeBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /boat-type/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the boat type to get
+      security:
+        - bearerAuth: []
+      tags:
+        - BoatType
+      description: Return boat type with the specified id
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the boat type to update
+      security:
+        - bearerAuth: []
+      tags:
+        - BoatType
+      description: Update boat type with the specified id
+      requestBody:
+        description: Update boat type with the specified id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoatTypeBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the boat type to delete
+      security:
+        - bearerAuth: []
+      tags:
+        - BoatType
+      description: Delete boat type with the specified id
       responses:
         200:
           description: Return the example with the specified id
@@ -493,3 +687,12 @@ components:
           example: picture
         location:
           $ref: '#/components/schemas/Location'
+
+    BoatTypeBody:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          example: example 3
