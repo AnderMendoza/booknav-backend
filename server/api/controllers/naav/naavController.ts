@@ -25,6 +25,11 @@ export class NaavController {
         const result = await cloudinary.uploader.upload(req.file.path);
         req.body.picture = result.secure_url;
       }
+      const userId = res.locals?.user?.data.data
+        ? res.locals?.user?.data.data
+        : res.locals?.user?.data;
+
+      req.body.userId = userId;
       const naav = await Naav.create(req.body);
       return res.json(naav);
     } catch (error) {
@@ -40,6 +45,11 @@ export class NaavController {
         const result = await cloudinary.uploader.upload(req.file.path);
         req.body.picture = result.secure_url;
       }
+      const userId = res.locals?.user?.data.data
+        ? res.locals?.user?.data.data
+        : res.locals?.user?.data;
+
+      req.body.userId = userId;
       const naav = await Naav.findByIdAndUpdate(id, req.body, {
         new: true,
       });

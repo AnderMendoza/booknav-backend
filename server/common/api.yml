@@ -250,6 +250,64 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /ghat:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Ghat
+      description: Return all ghat
+      responses:
+        200:
+          description: Return all ghat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ghat/file:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Ghat
+      description: Create ghat
+      requestBody:
+        description: Create ghat
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GhatBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /ghat/{id}:
     get:
       parameters:
@@ -355,16 +413,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /ghat:
+  /naav:
     get:
       security:
         - bearerAuth: []
       tags:
-        - Ghat
-      description: Return all ghat
+        - Naav
+      description: Return all naav
       responses:
         200:
-          description: Return all ghat
+          description: Return all naav
           content:
             application/json:
               schema:
@@ -381,19 +439,123 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /ghat/file:
+  /naav/file:
     post:
       security:
         - bearerAuth: []
       tags:
-        - Ghat
-      description: Create ghat
+        - Naav
+      description: Create naav
       requestBody:
-        description: Create ghat
+        description: Create naav
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/GhatBody'
+              $ref: '#/components/schemas/NaavBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /naav/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the  naav to get
+      security:
+        - bearerAuth: []
+      tags:
+        - Naav
+      description: Return  naav with the specified id
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the  naav to delete
+      security:
+        - bearerAuth: []
+      tags:
+        - Naav
+      description: Delete  naav with the specified id
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /naav/{id}/file:
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the  naav to update
+      security:
+        - bearerAuth: []
+      tags:
+        - Naav
+      description: Update  naav with the specified id
+      requestBody:
+        description: Update  naav with the specified id
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NaavBody'
       responses:
         200:
           description: Return the example with the specified id
@@ -673,7 +835,7 @@ components:
           example: 106.8
 
     GhatBody:
-      title: ghat add
+      title: Ghat add
       required:
         - title
       type: object
@@ -699,3 +861,27 @@ components:
         title:
           type: string
           example: example 3
+
+    NaavBody:
+      type: object
+      required:
+        - boatTypeId
+        - ghatId
+        - userId
+      properties:
+        boatTypeId:
+          type: string
+          example: 3
+        ghatId:
+          type: string
+          example: 3
+        title:
+          type: string
+          example: example 3
+        description:
+          type: string
+          example: example 3
+        picture:
+          type: string
+          format: binary
+          example: picture
