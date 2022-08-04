@@ -283,6 +283,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    delete:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the ghat to delete
+      security:
+        - bearerAuth: []
+      tags:
+        - Ghat
+      description: Delete ghat with the specified id
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /ghat/{id}/file:
     put:
       parameters:
         - in: path
@@ -321,38 +354,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    delete:
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-          required: true
-          description: ID of the ghat to delete
-      security:
-        - bearerAuth: []
-      tags:
-        - Ghat
-      description: Delete ghat with the specified id
-      responses:
-        200:
-          description: Return the example with the specified id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Example'
-        4XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        5XX:
-          description: Example not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+
   /ghat:
     get:
       security:
@@ -379,6 +381,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /ghat/file:
     post:
       security:
         - bearerAuth: []

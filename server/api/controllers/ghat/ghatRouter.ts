@@ -8,7 +8,7 @@ export default express
   .Router()
   .get('/:id', isAuthenticated, GhatController.getById)
   .put(
-    '/:id',
+    '/:id/file',
     isAuthenticated,
     isAdmin,
     upload.single('picture'),
@@ -16,7 +16,7 @@ export default express
   )
   .get('/', isAuthenticated, GhatController.getAll)
   .post(
-    '/',
+    '/file',
     isAuthenticated,
     isAdmin,
     upload.single('picture'),
