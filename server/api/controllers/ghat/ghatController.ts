@@ -28,7 +28,6 @@ export class GhatController {
       }
 
       const location = JSON.parse(req.body.location);
-      console.log(req.body);
       req.body.location = {
         lat: location.lat,
         lng: location.lng,
