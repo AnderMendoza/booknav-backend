@@ -5,7 +5,10 @@ import Naav from '../../models/Naav';
 export class NaavController {
   async getById(req: Request, res: Response) {
     try {
-      const naav = await Naav.findById(req.params.id);
+      const naav = await Naav.findById(req.params.id)
+        .populate('boatType')
+        .populate('user')
+        .populate('ghat');
       return res.json(naav);
     } catch (error) {
       return res.status(400).json({ message: 'Naav not found' });
@@ -13,7 +16,10 @@ export class NaavController {
   }
   async getAll(_req: Request, res: Response) {
     try {
-      const naavs = await Naav.find();
+      const naavs = await Naav.find()
+        .populate('boatType')
+        .populate('user')
+        .populate('ghat');
       return res.json(naavs);
     } catch (error) {
       return res.status(400).send({ message: 'Naavs not found' });
@@ -29,7 +35,7 @@ export class NaavController {
         ? res.locals?.user?.data.data
         : res.locals?.user?.data;
 
-      req.body.userId = userId;
+      req.body.user = userId;
       const naav = await Naav.create(req.body);
       return res.json(naav);
     } catch (error) {
@@ -45,11 +51,11 @@ export class NaavController {
         const result = await cloudinary.uploader.upload(req.file.path);
         req.body.picture = result.secure_url;
       }
-      const userId = res.locals?.user?.data.data
+      const user = res.locals?.user?.data.data
         ? res.locals?.user?.data.data
         : res.locals?.user?.data;
 
-      req.body.userId = userId;
+      req.body.user = user;
       const naav = await Naav.findByIdAndUpdate(id, req.body, {
         new: true,
       });

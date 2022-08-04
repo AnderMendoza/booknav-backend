@@ -2,17 +2,17 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const naavSchema = new Schema({
-  boatTypeId: {
+  boatType: {
     type: Schema.Types.ObjectId,
     ref: 'boatType',
     required: true,
   },
-  ghatId: {
+  ghat: {
     type: Schema.Types.ObjectId,
     ref: 'ghat',
     required: true,
   },
-  userId: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'users',
     required: true,
