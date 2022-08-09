@@ -23,8 +23,16 @@ const naavSchema = new Schema({
   description: {
     type: String,
   },
-  picture: {
-    type: String,
+  pictures: [
+    {
+      type: String,
+    },
+  ],
+  price: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 999999,
   },
 });
 

@@ -867,6 +867,7 @@ components:
       required:
         - boatType
         - ghat
+        - price
       properties:
         boatType:
           type: string
@@ -884,3 +885,6 @@ components:
           type: string
           format: binary
           example: picture
+        price:
+          type: number
+          example: 3
