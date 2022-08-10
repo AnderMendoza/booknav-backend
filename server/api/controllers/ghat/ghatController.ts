@@ -27,16 +27,17 @@ export class GhatController {
         req.body.picture = result.secure_url;
       }
 
-      const location = JSON.parse(req.body.location);
-      req.body.location = {
-        lat: location.lat,
-        lng: location.lng,
-      };
+      if (req.body.location) {
+        const location = JSON.parse(req.body.location);
+        req.body.location = {
+          lat: location.lat,
+          lng: location.lng,
+        };
+      }
       const ghat = await Ghat.create(req.body);
 
       return res.json(ghat);
     } catch (error) {
-      console.log(error);
       return res.status(400).send({ message: 'Unable to add ghat' });
     }
   }
@@ -48,12 +49,13 @@ export class GhatController {
         const result = await cloudinary.uploader.upload(req.file.path);
         req.body.picture = result.secure_url;
       }
-      const location = JSON.parse(req.body.location);
-
-      req.body.location = {
-        lat: location.lat,
-        lng: location.lng,
-      };
+      if (req.body.location) {
+        const location = JSON.parse(req.body.location);
+        req.body.location = {
+          lat: location.lat,
+          lng: location.lng,
+        };
+      }
       const ghat = await Ghat.findByIdAndUpdate(id, req.body, { new: true });
 
       return res.json(ghat);
