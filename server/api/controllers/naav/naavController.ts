@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 import cloudinary from '../../middlewares/cloudinary';
 import Naav from '../../models/Naav';
 
@@ -56,18 +57,24 @@ export class NaavController {
         : res.locals?.user?.data;
 
       req.body.user = user;
-      const naav = await Naav.findByIdAndUpdate(
-        id,
-        {
-          $set: req.body,
-          $push: {
-            pictures: image,
+      req.body.ghat = new mongoose.Types.ObjectId(req.body.ghat);
+      req.body.boatType = new mongoose.Types.ObjectId(req.body.boatType);
+      if (image) {
+        const naav = await Naav.findByIdAndUpdate(
+          id,
+          {
+            $set: req.body,
+            $push: {
+              pictures: image,
+            },
           },
-        },
-        {
-          new: true,
-        }
-      );
+          {
+            new: true,
+          }
+        );
+        return res.json(naav);
+      }
+      const naav = await Naav.findByIdAndUpdate(id, req.body, { new: true });
       return res.json(naav);
     } catch (error) {
       return res.status(400).send({ message: 'Unable to update naav' });
