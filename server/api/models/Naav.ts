@@ -34,6 +34,12 @@ const naavSchema = new Schema({
     min: 0,
     max: 999999,
   },
+  capacity: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 100,
+  },
 });
 
 const Naav = mongoose.model('naav', naavSchema);
