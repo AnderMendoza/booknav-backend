@@ -80,6 +80,15 @@ export class NaavController {
       return res.status(400).send({ message: 'Unable to update naav' });
     }
   }
+  async status(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const naav = await Naav.findByIdAndUpdate(id, req.body, { new: true });
+      return res.json(naav);
+    } catch (error) {
+      return res.status(400).send({ message: 'Unable to update naav status' });
+    }
+  }
   async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;

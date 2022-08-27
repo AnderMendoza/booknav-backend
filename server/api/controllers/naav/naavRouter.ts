@@ -1,4 +1,5 @@
 import * as express from 'express';
+import isAdmin from '../../middlewares/isAdmin';
 import isAuthenticated from '../../middlewares/isAuthenticated';
 import isNaavik from '../../middlewares/isNaavik';
 import upload from '../user/multer';
@@ -14,6 +15,7 @@ export default express
     upload.single('picture'),
     naavController.update
   )
+  .put('/:id/status', isAuthenticated, isAdmin, naavController.status)
   .delete('/:id', isAuthenticated, isNaavik, naavController.delete)
   .get('/', isAuthenticated, naavController.getAll)
   .post(

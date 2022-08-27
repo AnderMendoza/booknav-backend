@@ -575,6 +575,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /naav/{id}/status:
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the  naav to update
+      security:
+        - bearerAuth: []
+      tags:
+        - Naav
+      description: Update naav with the specified id
+      requestBody:
+        description: Update  naav with the specified id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NaavStatusBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /boat-type:
     get:
@@ -868,6 +907,7 @@ components:
         - boatType
         - ghat
         - price
+        - capacity
       properties:
         boatType:
           type: string
@@ -888,3 +928,18 @@ components:
         price:
           type: number
           example: 3
+        capacity:
+          type: number
+          example: 3
+        isPublished:
+          type: boolean
+          example: false
+
+    NaavStatusBody:
+      type: object
+      required:
+        - isPublished
+      properties:
+        isPublished:
+          type: boolean
+          example: false

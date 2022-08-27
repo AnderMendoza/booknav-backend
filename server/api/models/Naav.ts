@@ -40,6 +40,10 @@ const naavSchema = new Schema({
     min: 0,
     max: 100,
   },
+  isPublished: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Naav = mongoose.model('naav', naavSchema);
