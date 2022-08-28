@@ -415,6 +415,19 @@ paths:
 
   /naav:
     get:
+      parameters:
+        - in: query
+          name: boatTypeId
+          schema:
+            type: string
+        - in: query
+          name: ghatId
+          schema:
+            type: string
+        - in: query
+          name: isPublished
+          schema:
+            type: boolean
       security:
         - bearerAuth: []
       tags:

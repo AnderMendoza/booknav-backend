@@ -15,17 +15,35 @@ export class NaavController {
       return res.status(400).json({ message: 'Naav not found' });
     }
   }
-  async getAll(_req: Request, res: Response) {
+
+  async getAll(req: Request, res: Response) {
     try {
-      const naavs = await Naav.find()
+      let naavs = await Naav.find()
         .populate('boatType')
         .populate('user')
         .populate('ghat');
+
+      const { boatTypeId, ghatId, isPublished } = req.query as unknown as {
+        boatTypeId: string;
+        ghatId: string;
+        isPublished: boolean;
+      };
+
+      if (boatTypeId)
+        naavs = naavs.filter(
+          (naav) => naav.boatType._id.toString() === boatTypeId
+        );
+      if (ghatId)
+        naavs = naavs.filter((naav) => naav.ghat._id.toString() === ghatId);
+      if (isPublished === true || isPublished === false)
+        naavs = naavs.filter((naav) => naav.isPublished === isPublished);
+
       return res.json(naavs);
     } catch (error) {
       return res.status(400).send({ message: 'Naavs not found' });
     }
   }
+
   async add(req: Request, res: Response) {
     try {
       if (req.file) {
@@ -44,6 +62,7 @@ export class NaavController {
       return res.status(400).send({ message: 'Unable to add naav' });
     }
   }
+
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
@@ -80,6 +99,7 @@ export class NaavController {
       return res.status(400).send({ message: 'Unable to update naav' });
     }
   }
+
   async status(req: Request, res: Response) {
     try {
       const { id } = req.params;
@@ -89,6 +109,7 @@ export class NaavController {
       return res.status(400).send({ message: 'Unable to update naav status' });
     }
   }
+
   async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
