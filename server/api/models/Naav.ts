@@ -44,6 +44,10 @@ const naavSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  reviews: {
+    type: [Schema.Types.ObjectId],
+    ref: 'review',
+  },
 });
 
 const Naav = mongoose.model('naav', naavSchema);

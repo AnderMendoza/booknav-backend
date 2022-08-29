@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
+import Review from '../../models/Review';
 import cloudinary from '../../middlewares/cloudinary';
 import Naav from '../../models/Naav';
 
@@ -9,7 +10,9 @@ export class NaavController {
       const naav = await Naav.findById(req.params.id)
         .populate('boatType')
         .populate('user')
-        .populate('ghat');
+        .populate('ghat')
+        .populate('reviews');
+
       return res.json(naav);
     } catch (error) {
       return res.status(400).json({ message: 'Naav not found' });
@@ -21,7 +24,8 @@ export class NaavController {
       let naavs = await Naav.find()
         .populate('boatType')
         .populate('user')
-        .populate('ghat');
+        .populate('ghat')
+        .populate('reviews');
 
       const { boatTypeId, ghatId, isPublished } = req.query as unknown as {
         boatTypeId: string;
@@ -117,6 +121,21 @@ export class NaavController {
       return res.json(naav);
     } catch (error) {
       return res.status(400).send({ message: 'Unable to delete naav' });
+    }
+  }
+
+  async review(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const review = await Review.create(req.body);
+      const naav = await Naav.findByIdAndUpdate(id, {
+        $push: {
+          reviews: review,
+        },
+      });
+      return res.json(naav);
+    } catch (error) {
+      return res.status(400).send({ message: 'Unable to review naav' });
     }
   }
 }

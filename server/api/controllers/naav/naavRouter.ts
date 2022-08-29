@@ -24,4 +24,5 @@ export default express
     isNaavik,
     upload.single('picture'),
     naavController.add
-  );
+  )
+  .put('/:id/review', isAuthenticated, naavController.review);

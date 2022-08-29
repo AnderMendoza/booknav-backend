@@ -627,6 +627,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /naav/{id}/review:
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the  naav to update
+      security:
+        - bearerAuth: []
+      tags:
+        - Naav
+      description: Update naav with the specified id add review
+      requestBody:
+        description: Update naav with the specified id add review
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NaavReviewBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /boat-type:
     get:
@@ -956,3 +995,15 @@ components:
         isPublished:
           type: boolean
           example: false
+
+    NaavReviewBody:
+      type: object
+      required:
+        - rating
+      properties:
+        rating:
+          type: number
+          example: 3
+        comment:
+          type: string
+          example: example 3
