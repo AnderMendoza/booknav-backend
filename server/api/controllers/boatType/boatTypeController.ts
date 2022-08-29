@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import BoatType from '../../models/BoatType';
+import Naav from '../../models/Naav';
 
 export class BoatTypeController {
   async getById(req: Request, res: Response) {
@@ -14,8 +15,22 @@ export class BoatTypeController {
   async getAll(_req: Request, res: Response) {
     try {
       const boatType = await BoatType.find();
-      return res.json(boatType);
+      const naav = await Naav.distinct('boatType').find({
+        reviews: { $exists: true },
+      });
+      const boatTypes = boatType.map((boatType) => {
+        return {
+          ...boatType._doc,
+          image:
+            naav.find(
+              (naav) => naav.boatType.toString() === boatType._id.toString()
+            )?.pictures[0] || '',
+        };
+      });
+
+      return res.json(boatTypes);
     } catch (error) {
+      console.log(error);
       return res.status(400).send({ message: 'boatType not found' });
     }
   }
