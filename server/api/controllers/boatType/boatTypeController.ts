@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import BoatType from '../../models/BoatType';
 import Naav from '../../models/Naav';
-
+import { Review } from '../../../types/review';
 export class BoatTypeController {
   async getById(req: Request, res: Response) {
     try {
@@ -15,9 +15,13 @@ export class BoatTypeController {
   async getAll(_req: Request, res: Response) {
     try {
       const boatType = await BoatType.find();
-      const naav = await Naav.distinct('boatType').find({
-        reviews: { $exists: true },
-      });
+      //get image from naav which as a review
+      const naav = await Naav.distinct('boatType')
+        .find({
+          reviews: { $exists: true },
+        })
+        .populate('reviews');
+      //get average rating of naav
       const boatTypes = boatType.map((boatType) => {
         return {
           ...boatType._doc,
@@ -25,6 +29,18 @@ export class BoatTypeController {
             naav.find(
               (naav) => naav.boatType.toString() === boatType._id.toString()
             )?.pictures[0] || '',
+          rating: (() => {
+            const reviews = naav.find(
+              (naav) => naav.boatType.toString() === boatType._id.toString()
+            )?.reviews;
+            return (
+              reviews?.reduce(
+                (sum: number, review: Review) =>
+                  (sum + review.rating) / reviews.length,
+                0
+              ) || 0
+            );
+          })(),
         };
       });
 
