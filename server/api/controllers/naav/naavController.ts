@@ -11,7 +11,13 @@ export class NaavController {
         .populate('boatType')
         .populate('user')
         .populate('ghat')
-        .populate('reviews');
+        .populate('reviews')
+        .populate({
+          path: 'reviews',
+          populate: {
+            path: 'user',
+          },
+        });
 
       return res.json(naav);
     } catch (error) {
@@ -82,6 +88,7 @@ export class NaavController {
       req.body.user = user;
       req.body.ghat = new mongoose.Types.ObjectId(req.body.ghat);
       req.body.boatType = new mongoose.Types.ObjectId(req.body.boatType);
+
       if (image) {
         const naav = await Naav.findByIdAndUpdate(
           id,
@@ -97,6 +104,7 @@ export class NaavController {
         );
         return res.json(naav);
       }
+
       const naav = await Naav.findByIdAndUpdate(id, req.body, { new: true });
       return res.json(naav);
     } catch (error) {
@@ -127,6 +135,10 @@ export class NaavController {
   async review(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      req.body.user = res.locals?.user?.data.data
+        ? res.locals?.user?.data.data
+        : res.locals?.user?.data;
+
       const review = await Review.create(req.body);
       const naav = await Naav.findByIdAndUpdate(id, {
         $push: {

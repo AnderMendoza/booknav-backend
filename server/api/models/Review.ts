@@ -9,6 +9,10 @@ const ReviewSchema = new Schema({
   comment: {
     type: String,
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
+  },
 });
 
 const Review = mongoose.model('review', ReviewSchema);
