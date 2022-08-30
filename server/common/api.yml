@@ -724,7 +724,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
   /boat-type/{id}:
     get:
       parameters:
@@ -809,6 +808,167 @@ paths:
       tags:
         - BoatType
       description: Delete boat type with the specified id
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /bank:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Bank
+      description: Return all banks
+      responses:
+        200:
+          description: Return all banks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Bank
+      description: Create bank
+      requestBody:
+        description: Create bank
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /bank/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the bank to get
+      security:
+        - bearerAuth: []
+      tags:
+        - Bank
+      description: Return bank with the specified id
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the bank to update
+      security:
+        - bearerAuth: []
+      tags:
+        - Bank
+      description: Update bank with the specified id
+      requestBody:
+        description: Update bank with the specified id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankBody'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the bank to delete
+      security:
+        - bearerAuth: []
+      tags:
+        - Bank
+      description: Delete bank with the specified id
       responses:
         200:
           description: Return the example with the specified id
@@ -1005,5 +1165,26 @@ components:
           type: number
           example: 3
         comment:
+          type: string
+          example: example 3
+
+    BankBody:
+      type: object
+      required:
+        - accountName
+        - accountNumber
+        - bankName
+        - ifscCode
+      properties:
+        accountName:
+          type: string
+          example: example 3
+        accountNumber:
+          type: number
+          example: 32385929238529
+        bankName:
+          type: string
+          example: example 3
+        ifscCode:
           type: string
           example: example 3
