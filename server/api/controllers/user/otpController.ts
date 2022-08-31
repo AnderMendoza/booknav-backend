@@ -68,7 +68,8 @@ export class OtpController {
     const rf = await Token.findOne({ token: refreshToken });
 
     try {
-      if (refreshToken && rf)
+      if (!rf) throw new Error('Invalid refresh token');
+      if (refreshToken && rf) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         jwt.verify(refreshToken, JWT_REFRESH_TOKEN, (err: any, phone: any) => {
           if (err) throw new Error('Refresh token expired');
@@ -77,6 +78,7 @@ export class OtpController {
           });
           return res.status(200).send({ accessToken });
         });
+      }
     } catch (error) {
       res.status(401).send({ message: 'Refresh token expired' });
     }

@@ -85,9 +85,22 @@ paths:
 
   /users/refresh:
     post:
+      security:
+        - bearerAuth: []
       tags:
         - Refresh token
       description: Refresh token user
+      requestBody:
+        description: Refresh token user
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                  description: Refresh token user
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
       responses:
         200:
           description: Return the example with the specified id
