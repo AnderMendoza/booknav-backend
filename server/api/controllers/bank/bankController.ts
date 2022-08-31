@@ -11,10 +11,19 @@ class BankController {
       return res.status(400).send({ message: 'bank not found' });
     }
   }
-  async getAll(_req: Request, res: Response) {
+  async get(_req: Request, res: Response) {
     try {
-      const banks = await Bank.find().populate('user');
-      return res.json(banks);
+      const user = res.locals?.user?.data.data
+        ? res.locals?.user?.data.data
+        : res.locals?.user?.data;
+
+      if (user.role === 'admin') {
+        const banks = await Bank.find();
+        return res.json(banks);
+      } else {
+        const bank = await Bank.find({ user });
+        return res.json(bank);
+      }
     } catch (error) {
       return res.status(400).send({ message: 'banks not found' });
     }

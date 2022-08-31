@@ -5,8 +5,7 @@ import bankController from './bankController';
 
 export default express
   .Router()
-  .get('/:id', isAuthenticated, bankController.getById)
   .put('/:id', isAuthenticated, isNaavik, bankController.update)
   .delete('/:id', isAuthenticated, bankController.delete)
-  .get('/', isAuthenticated, bankController.getAll)
+  .get('/', isAuthenticated, bankController.get)
   .post('/', isAuthenticated, isNaavik, bankController.add);
