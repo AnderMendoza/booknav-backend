@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import cloudinary from '../../middlewares/cloudinary';
 import Ghat from '../../models/Ghat';
+import Naav from '../../models/Naav';
 
 export class GhatController {
   async getById(req: Request, res: Response) {
@@ -14,8 +15,16 @@ export class GhatController {
   }
   async getAll(_req: Request, res: Response) {
     try {
-      const ghat = await Ghat.find();
-      return res.json(ghat);
+      const ghats = await Ghat.find();
+      // get total boats on each ghat
+      const naavs = await Naav.find({}, { ghat: 1, _id: 1 });
+      const ghatsWithBoats = ghats.map((ghat) => {
+        const totalNaavs = naavs.filter(
+          (naav) => naav.ghat._id.toString() === ghat._id.toString()
+        ).length;
+        return { ...ghat._doc, totalNaavs };
+      });
+      return res.json(ghatsWithBoats);
     } catch (error) {
       return res.status(400).send({ message: 'Ghat not found' });
     }
