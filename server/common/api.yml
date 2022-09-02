@@ -432,7 +432,9 @@ paths:
         - in: query
           name: boatTypeId
           schema:
-            type: string
+            type: array
+            items:
+              type: string
         - in: query
           name: ghatId
           schema:

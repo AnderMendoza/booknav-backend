@@ -27,29 +27,25 @@ export class NaavController {
 
   async getAll(req: Request, res: Response) {
     try {
-      let naavs = await Naav.find()
+      const { boatTypeId, ghatId, isPublished } = req.query as unknown as {
+        boatTypeId?: string[];
+        ghatId?: string;
+        isPublished?: boolean;
+      };
+
+      const naavs = await Naav.find({
+        ...(boatTypeId && { boatType: { $in: boatTypeId } }),
+        ...(ghatId && { ghat: ghatId }),
+        ...(isPublished && { isPublished: isPublished }),
+      })
         .populate('boatType')
         .populate('user')
         .populate('ghat')
         .populate('reviews');
 
-      const { boatTypeId, ghatId, isPublished } = req.query as unknown as {
-        boatTypeId: string;
-        ghatId: string;
-        isPublished: boolean;
-      };
-
-      if (boatTypeId)
-        naavs = naavs.filter(
-          (naav) => naav.boatType._id.toString() === boatTypeId
-        );
-      if (ghatId)
-        naavs = naavs.filter((naav) => naav.ghat._id.toString() === ghatId);
-      if (isPublished === true || isPublished === false)
-        naavs = naavs.filter((naav) => naav.isPublished === isPublished);
-
       return res.json(naavs);
     } catch (error) {
+      console.log(error);
       return res.status(400).send({ message: 'Naavs not found' });
     }
   }
