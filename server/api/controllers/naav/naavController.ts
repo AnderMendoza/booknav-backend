@@ -27,16 +27,20 @@ export class NaavController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const { boatTypeId, ghatId, isPublished } = req.query as unknown as {
-        boatTypeId?: string[];
-        ghatId?: string;
-        isPublished?: boolean;
-      };
+      const { boatTypeId, ghatId, isPublished, minPrice, maxPrice } =
+        req.query as unknown as {
+          boatTypeId?: string[];
+          ghatId?: string;
+          isPublished?: boolean;
+          minPrice?: number;
+          maxPrice?: number;
+        };
 
       const naavs = await Naav.find({
         ...(boatTypeId && { boatType: { $in: boatTypeId } }),
         ...(ghatId && { ghat: ghatId }),
         ...(isPublished && { isPublished: isPublished }),
+        ...(minPrice && { price: { $gte: minPrice, $lte: maxPrice } }),
       })
         .populate('boatType')
         .populate('user')

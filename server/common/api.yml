@@ -443,6 +443,14 @@ paths:
           name: isPublished
           schema:
             type: boolean
+        - in: query
+          name: minPrice
+          schema:
+            type: number
+        - in: query
+          name: maxPrice
+          schema:
+            type: number
       security:
         - bearerAuth: []
       tags:
