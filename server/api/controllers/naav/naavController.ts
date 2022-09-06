@@ -43,7 +43,6 @@ export class NaavController {
         ...(minPrice && { price: { $gte: minPrice, $lte: maxPrice } }),
       })
         .populate('boatType')
-        .populate('user')
         .populate('ghat')
         .populate('reviews');
 
