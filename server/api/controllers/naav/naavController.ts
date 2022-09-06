@@ -64,6 +64,7 @@ export class NaavController {
         : res.locals?.user?.data;
 
       req.body.user = userId;
+      req.body.price = JSON.parse(req.body.price);
       const naav = await Naav.create(req.body);
       return res.json(naav);
     } catch (error) {
@@ -85,6 +86,7 @@ export class NaavController {
         : res.locals?.user?.data;
 
       req.body.user = user;
+      req.body.price = JSON.parse(req.body.price);
       req.body.ghat = new mongoose.Types.ObjectId(req.body.ghat);
       req.body.boatType = new mongoose.Types.ObjectId(req.body.boatType);
 

@@ -1129,14 +1129,25 @@ components:
           format: binary
           example: picture
         price:
-          type: number
-          example: 3
+          $ref: '#/components/schemas/Price'
         capacity:
           type: number
           example: 3
         isPublished:
           type: boolean
           example: false
+    Price:
+      type: object
+      properties:
+        ghatToGhat:
+          type: number
+          example: 3
+        crossRiver:
+          type: number
+          example: 3
+        hourly:
+          type: number
+          example: 3
 
     NaavStatusBody:
       type: object
