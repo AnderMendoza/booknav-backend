@@ -1,4 +1,5 @@
 import * as express from 'express';
+import isPrivileged from '../../middlewares/isPrivileged';
 import isAdmin from '../../middlewares/isAdmin';
 import isAuthenticated from '../../middlewares/isAuthenticated';
 import isNaavik from '../../middlewares/isNaavik';
@@ -16,7 +17,7 @@ export default express
     naavController.update
   )
   .put('/:id/status', isAuthenticated, isAdmin, naavController.status)
-  .delete('/:id', isAuthenticated, isNaavik, naavController.delete)
+  .delete('/:id', isAuthenticated, isPrivileged, naavController.delete)
   .get('/', isAuthenticated, naavController.getAll)
   .post(
     '/file',

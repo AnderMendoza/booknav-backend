@@ -1,6 +1,24 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+const PriceSchema = new Schema({
+  ghatToGhat: {
+    type: Number,
+    min: 0,
+    max: 999999,
+  },
+  crossRiver: {
+    type: Number,
+    min: 0,
+    max: 999999,
+  },
+  hourly: {
+    type: Number,
+    min: 0,
+    max: 999999,
+  },
+});
+
 const naavSchema = new Schema({
   boatType: {
     type: Schema.Types.ObjectId,
@@ -28,12 +46,7 @@ const naavSchema = new Schema({
       type: String,
     },
   ],
-  price: {
-    type: Number,
-    required: true,
-    min: 0,
-    max: 999999,
-  },
+  price: PriceSchema,
   capacity: {
     type: Number,
     required: true,
