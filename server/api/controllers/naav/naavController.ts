@@ -73,6 +73,7 @@ export class NaavController {
     }
   }
 
+  // should not allow if booking is in pending state
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params;

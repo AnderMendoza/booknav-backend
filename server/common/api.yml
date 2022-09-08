@@ -979,6 +979,166 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /booking:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Booking
+      description: Return all bookings
+      responses:
+        200:
+          description: Return all bookings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Booking
+      description: Create booking
+      requestBody:
+        description: Create booking
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingBody'
+      responses:
+        200:
+          description: Return the booking with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /booking/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the booking to return
+      security:
+        - bearerAuth: []
+      tags:
+        - Booking
+      description: Return booking with the specified id
+      responses:
+        200:
+          description: Return the booking with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the booking to update
+      security:
+        - bearerAuth: []
+      tags:
+        - Booking
+      description: Update booking with the specified id
+      requestBody:
+        description: Update booking with the specified id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingBody'
+      responses:
+        200:
+          description: Return the booking with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the booking to delete
+      security:
+        - bearerAuth: []
+      tags:
+        - Booking
+      description: Delete booking with the specified id
+      responses:
+        200:
+          description: Return the booking with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   securitySchemes:
@@ -1190,3 +1350,24 @@ components:
         ifscCode:
           type: string
           example: example 3
+
+    BookingBody:
+      type: object
+      required:
+        - naav
+        - rideType
+        - guests
+        - startTime
+      properties:
+        naav:
+          type: string
+          example: 3
+        rideType:
+          type: string
+          example: ghatToGhat
+        guests:
+          type: number
+          example: 3
+        startTime:
+          type: string
+          example: 2020-10-10T10:10:10.000Z
