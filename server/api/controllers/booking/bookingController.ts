@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import Booking from 'server/api/models/Booking';
-import Naav from 'server/api/models/Naav';
+import Booking from '../../models/Booking';
+import Naav from '../../models/Naav';
 
 class BookingController {
   async getById(req: Request, res: Response) {
@@ -42,11 +42,18 @@ class BookingController {
       ? res.locals?.user?.data.data
       : res.locals?.user?.data;
 
+    if (new Date(req.body.startTime) < new Date())
+      return res
+        .status(400)
+        .json({ message: 'Start time cannot be in the past' });
+
     const naav = await Naav.findById(req.body.naav);
 
     const bookings = await Booking.find({
       startTime: { $gte: new Date(req.body.startTime) },
-      endTime: { $lte: new Date(req.body.endTime) },
+      endTime: {
+        $lte: new Date(req.body.startTime).getTime() + 90 * 60 * 1000,
+      },
     });
 
     if (bookings.length > 0) {
@@ -55,10 +62,10 @@ class BookingController {
     if (!naav.isPublished)
       return res.status(400).json({ message: 'Naav is not available' });
 
-    req.body.amount = naav.price;
+    req.body.amount = naav.price[req.body.rideType];
     req.body.endTime = new Date(
       // 90 minutes ahead of start time
-      new Date(req.body.startTime).getTime() + 90 * 60 * 60 * 1000
+      new Date(req.body.startTime).getTime() + 90 * 60 * 1000
     );
 
     const booking = await Booking.create({ ...req.body, user });
