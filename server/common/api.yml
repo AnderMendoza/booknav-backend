@@ -451,6 +451,10 @@ paths:
           name: maxPrice
           schema:
             type: number
+        - in: query
+          name: guests
+          schema:
+            type: number
       security:
         - bearerAuth: []
       tags:
@@ -1361,7 +1365,7 @@ components:
       properties:
         naav:
           type: string
-          example: 3
+          example: uuidasefjaseklfajsef
         rideType:
           type: string
           example: ghatToGhat
