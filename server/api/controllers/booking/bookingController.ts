@@ -26,12 +26,23 @@ class BookingController {
     return res.status(401).json({ message: 'Unauthorized' });
   }
   // return user's bookings if admin return all bookings
-  async getAll(_req: Request, res: Response) {
+  async getAll(req: Request, res: Response) {
     const user = res.locals?.user?.data.data
       ? res.locals?.user?.data.data
       : res.locals?.user?.data;
 
-    const bookings = await Booking.find(user.role === 'admin' ? {} : { user })
+    const { startTime } = req.query as unknown as { startTime?: string };
+
+    const bookings = await Booking.find(
+      user.role === 'admin'
+        ? {
+            ...(startTime && { startTime: { $gte: new Date(startTime) } }),
+          }
+        : {
+            user,
+            ...(startTime && { startTime: { $gte: new Date(startTime) } }),
+          }
+    )
       .populate('user')
       .populate('naav');
     res.json(bookings);
@@ -49,11 +60,23 @@ class BookingController {
 
     const naav = await Naav.findById(req.body.naav);
 
+    req.body.amount = naav.price[req.body.rideType];
+    req.body.endTime = new Date(
+      // 90 minutes ahead of start time
+      new Date(req.body.startTime).getTime() + 90 * 60 * 1000
+    );
+
     const bookings = await Booking.find({
-      startTime: { $gte: new Date(req.body.startTime) },
-      endTime: {
-        $lte: new Date(req.body.startTime).getTime() + 90 * 60 * 1000,
-      },
+      $or: [
+        {
+          startTime: { $lte: new Date(req.body.startTime) },
+          endTime: { $gt: new Date(req.body.startTime) },
+        },
+        {
+          startTime: { $lt: new Date(req.body.endTime) },
+          endTime: { $gte: new Date(req.body.endTime) },
+        },
+      ],
     });
 
     if (bookings.length > 0) {
@@ -61,12 +84,6 @@ class BookingController {
     }
     if (!naav.isPublished)
       return res.status(400).json({ message: 'Naav is not available' });
-
-    req.body.amount = naav.price[req.body.rideType];
-    req.body.endTime = new Date(
-      // 90 minutes ahead of start time
-      new Date(req.body.startTime).getTime() + 90 * 60 * 1000
-    );
 
     const booking = await Booking.create({ ...req.body, user });
     return res.json(booking);

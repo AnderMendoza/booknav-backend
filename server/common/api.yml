@@ -985,6 +985,14 @@ paths:
                 $ref: '#/components/schemas/Error'
   /booking:
     get:
+      parameters:
+        - in: query
+          name: startTime
+          schema:
+            type: string
+          required: false
+          description: Start time of the booking
+
       security:
         - bearerAuth: []
       tags:
