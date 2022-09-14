@@ -1151,6 +1151,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /booking/verify:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Booking
+      description: Verify booking
+      requestBody:
+        description: Verify booking
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyPaymentsBody'
+      responses:
+        200:
+          description: Return the booking with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   securitySchemes:
@@ -1383,3 +1415,37 @@ components:
         startTime:
           type: string
           example: 2020-10-10T10:10:10.000Z
+
+    VerifyPaymentsBody:
+      type: object
+      required:
+        - naav
+        - rideType
+        - guests
+        - startTime
+        - amount
+        - razorpay_order_id
+        - razorpay_payment_id
+        - razorpay_signature
+      properties:
+        booking:
+          type: string
+          example: uuidasefjaseklfajsef
+        paymentId:
+          type: string
+          example: uuidasefjaseklfajsef
+        naav:
+          type: string
+          example: uuidasefjaseklfajsef
+        rideType:
+          type: string
+          example: ghatToGhat
+        guests:
+          type: number
+          example: 3
+        startTime:
+          type: string
+          example: 2020-10-10T10:10:10.000Z
+        amount:
+          type: number
+          example: 3

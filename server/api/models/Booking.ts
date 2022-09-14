@@ -40,6 +40,18 @@ const bookingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'review',
   },
+  razorpay_order_id: {
+    type: String,
+    required: true,
+  },
+  razorpay_payment_id: {
+    type: String,
+    required: true,
+  },
+  razorpay_signature: {
+    type: String,
+    required: true,
+  },
 });
 
 const Booking = mongoose.model('booking', bookingSchema);
