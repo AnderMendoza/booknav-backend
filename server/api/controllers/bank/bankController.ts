@@ -17,13 +17,8 @@ class BankController {
         ? res.locals?.user?.data.data
         : res.locals?.user?.data;
 
-      if (user.role === 'admin') {
-        const banks = await Bank.find();
-        return res.json(banks);
-      } else {
-        const bank = await Bank.find({ user });
-        return res.json(bank);
-      }
+      const bank = await Bank.find({ user: user.role === 'admin' ? {} : user });
+      return res.json(bank);
     } catch (error) {
       return res.status(400).send({ message: 'banks not found' });
     }
