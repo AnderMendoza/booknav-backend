@@ -14,10 +14,11 @@ class BankController {
   async get(_req: Request, res: Response) {
     try {
       const user = res.locals?.user?.data.data
-        ? res.locals?.user?.data.data
-        : res.locals?.user?.data;
-
-      const bank = await Bank.find({ user: user.role === 'admin' ? {} : user });
+        ? res.locals?.user?.data
+        : res.locals?.user;
+      const bank = await Bank.find({
+        ...(user.role === 'admin' ? {} : { user: user.data }),
+      }).populate('user');
       return res.json(bank);
     } catch (error) {
       return res.status(400).send({ message: 'banks not found' });
