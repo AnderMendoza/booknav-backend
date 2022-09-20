@@ -913,6 +913,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   /bank/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the bank to get
+      security:
+        - bearerAuth: []
+      tags:
+        - Bank
+      description: Return bank with the specified id
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       parameters:
         - in: path
