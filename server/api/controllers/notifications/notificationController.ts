@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import Subscription from '../../models/Subscription';
-// import webpush from 'web-push';
 
 class NotificationController {
   async subscribe(req: Request, res: Response) {

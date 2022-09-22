@@ -3,6 +3,7 @@ import Booking from '../../models/Booking';
 import Naav from '../../models/Naav';
 import crypto from 'crypto';
 import Razorpay from 'razorpay';
+import { checkAvailableBooking } from './utils';
 
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -56,36 +57,13 @@ class BookingController {
   }
 
   async add(req: Request, res: Response) {
-    if (new Date(req.body.startTime) < new Date())
-      return res
-        .status(400)
-        .json({ message: 'Start time cannot be in the past' });
-
     const naav = await Naav.findById(req.body.naav);
-
     const amount = naav.price[req.body.rideType] * 100; //paise
-    req.body.endTime = new Date(
-      // 90 minutes ahead of start time
-      new Date(req.body.startTime).getTime() + 90 * 60 * 1000
-    );
-
-    const bookings = await Booking.find({
-      $or: [
-        {
-          startTime: { $lte: new Date(req.body.startTime) },
-          endTime: { $gt: new Date(req.body.startTime) },
-        },
-        {
-          startTime: { $lt: new Date(req.body.endTime) },
-          endTime: { $gte: new Date(req.body.endTime) },
-        },
-      ],
+    const available = await checkAvailableBooking({
+      startTime: req.body.startTime,
+      naav,
     });
-
-    if (bookings.length > 0) {
-      return res.status(400).json({ message: 'Booking already exists' });
-    }
-    if (!naav.isPublished)
+    if (!available)
       return res.status(400).json({ message: 'Naav is not available' });
 
     const orderOptions = {
@@ -112,6 +90,14 @@ class BookingController {
 
   async verify(req: Request, res: Response) {
     try {
+      const naav = await Naav.findById(req.body.naav);
+      const available = await checkAvailableBooking({
+        startTime: req.body.startTime,
+        naav,
+      });
+      if (!available)
+        return res.status(400).json({ message: 'Naav is not available' });
+
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
         req.body;
       const sign = razorpay_order_id + '|' + razorpay_payment_id;
