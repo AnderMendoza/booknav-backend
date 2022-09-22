@@ -6,6 +6,7 @@ import os from 'os';
 import cookieParser from 'cookie-parser';
 import l from './logger';
 import cors from 'cors';
+import webpush from 'web-push';
 
 import errorHandler from '../api/middlewares/error.handler';
 import * as OpenApiValidator from 'express-openapi-validator';
@@ -31,6 +32,12 @@ export default class ExpressServer {
       cors({
         origin: '*',
       })
+    );
+
+    webpush.setVapidDetails(
+      'mailto: anubhavgupta1307@gmail.com',
+      process.env.VAPID_PUBLIC_KEY || '',
+      process.env.VAPID_PRIVATE_KEY || ''
     );
 
     const apiSpec = path.join(__dirname, 'api.yml');

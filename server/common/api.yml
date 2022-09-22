@@ -1216,6 +1216,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /notification/subscribe:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Notifications
+      description: Subscribe to  notification
+      requestBody:
+        description: Subscribe to  notification
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscribeBody'
+      responses:
+        200:
+          description: Return the  with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme
@@ -1481,3 +1514,31 @@ components:
         amount:
           type: number
           example: 3
+
+    SubscribeBody:
+      type: object
+      required:
+        - subscription
+
+      properties:
+        subscription:
+          $ref: '#/components/schemas/Subscription'
+
+    Subscription:
+      type: object
+      properties:
+        endpoint:
+          type: string
+          example: uuidasefjaseklfajsef
+        keys:
+          $ref: '#/components/schemas/Keys'
+
+    Keys:
+      type: object
+      properties:
+        p256dh:
+          type: string
+          example: uuidasefjaseklfajsef
+        auth:
+          type: string
+          example: uuidasefjaseklfajsef
