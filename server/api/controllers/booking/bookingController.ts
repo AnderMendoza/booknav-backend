@@ -4,6 +4,8 @@ import Naav from '../../models/Naav';
 import crypto from 'crypto';
 import Razorpay from 'razorpay';
 import { checkAvailableBooking } from './utils';
+import Subscription from '../../models/Subscription';
+import webpush from 'web-push';
 
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -108,25 +110,39 @@ class BookingController {
 
       if (razorpay_signature === expectedSign) {
         const user = res.locals?.user?.data.data
-          ? res.locals?.user?.data.data
-          : res.locals?.user?.data;
+          ? res.locals?.user?.data
+          : res.locals?.user;
 
         const prevBooking = await Booking.findOne({
           razorpay_payment_id,
         });
+
         if (prevBooking)
           return res
             .status(200)
             .json({ message: 'Payment verified successfully' });
 
         const booking = await Booking.create({
-          user,
+          user: user.data,
           ...req.body,
           endTime: new Date(
             new Date(req.body.startTime).getTime() + 90 * 60 * 1000
           ),
           status: 'paid',
         });
+
+        const subscription = await Subscription.findOne({
+          user: naav.user,
+        });
+
+        webpush.sendNotification(
+          subscription,
+          JSON.stringify({
+            title: 'New Booking',
+            description: `You have a new booking from ${user.phone}`,
+            icon: naav.pictures[0],
+          })
+        );
 
         return res
           .status(200)
