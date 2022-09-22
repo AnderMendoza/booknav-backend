@@ -135,14 +135,27 @@ class BookingController {
           user: naav.user,
         });
 
-        webpush.sendNotification(
-          subscription,
-          JSON.stringify({
-            title: 'New Booking',
-            description: `You have a new booking from ${user.phone}`,
-            icon: naav.pictures[0],
-          })
-        );
+        console.log(subscription);
+
+        webpush
+          .sendNotification(
+            subscription,
+            JSON.stringify({
+              title: 'New Booking',
+              description: `You have a new booking from ${user.phone}`,
+              icon: naav.pictures[0],
+            })
+          )
+          .then(() => {
+            console.log(
+              'Notification sent',
+              JSON.stringify({
+                title: 'New Booking',
+                description: `You have a new booking from ${user.phone}`,
+                icon: naav.pictures[0],
+              })
+            );
+          });
 
         return res
           .status(200)
