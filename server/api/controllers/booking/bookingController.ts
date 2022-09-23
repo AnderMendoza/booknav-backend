@@ -191,6 +191,20 @@ class BookingController {
   async updateStatus(req: Request, res: Response) {
     const { id } = req.params;
     const status = req.body.status;
+
+    if (
+      ![
+        'Cancelled',
+        'Declined',
+        'Confirmed',
+        'Completed',
+        'Ongoing',
+        'Refunded',
+      ].includes(status)
+    ) {
+      res.status(400).json({ message: 'Invalid status' });
+    }
+
     const user = res.locals?.user?.data.data
       ? res.locals?.user?.data
       : res.locals?.user;
@@ -207,6 +221,10 @@ class BookingController {
     ) {
       if (status === 'Cancelled')
         if (isNaavik) {
+          return res.status(401).json({ message: 'Unauthorized' });
+        }
+      if (status === 'Declined')
+        if (isCustomer) {
           return res.status(401).json({ message: 'Unauthorized' });
         }
 
