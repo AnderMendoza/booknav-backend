@@ -1216,6 +1216,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /booking/{id}/status:
+    put:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the booking to update
+      security:
+        - bearerAuth: []
+      tags:
+        - booking
+      description: Update booking status with the specified id
+      requestBody:
+        description: Update booking status with the specified id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingStatusBody'
+      responses:
+        200:
+          description: Return the booking with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /notification/subscribe:
     post:
       security:
@@ -1540,5 +1580,14 @@ components:
           type: string
           example: uuidasefjaseklfajsef
         auth:
+          type: string
+          example: uuidasefjaseklfajsef
+
+    BookingStatusBody:
+      type: object
+      required:
+        - status
+      properties:
+        status:
           type: string
           example: uuidasefjaseklfajsef

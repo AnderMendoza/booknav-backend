@@ -11,4 +11,4 @@ export default express
   .put('/:id', isAuthenticated, isAdmin, bookingController.update)
   .delete('/:id', isAuthenticated, isAdmin, bookingController.delete)
   .post('/verify', isAuthenticated, bookingController.verify)
-  .put('/:id', isAuthenticated, bookingController.updateStatus);
+  .put('/:id/status', isAuthenticated, bookingController.updateStatus);

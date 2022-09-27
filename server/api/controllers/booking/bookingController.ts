@@ -52,7 +52,7 @@ class BookingController {
     ) {
       return res.json(booking);
     }
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(406).json({ message: 'Unauthorized' });
   }
   // return user's bookings if admin return all bookings
   async getAll(req: Request, res: Response) {
@@ -200,6 +200,7 @@ class BookingController {
         'Completed',
         'Ongoing',
         'Refunded',
+        'PartiallyRefunded',
       ].includes(status)
     ) {
       res.status(400).json({ message: 'Invalid status' });
@@ -212,41 +213,40 @@ class BookingController {
     const isNaavik = user.role === 'naavik';
     const isCustomer = !isAdmin && !isNaavik;
 
-    const booking = await Booking.findById(id);
+    const booking = await Booking.findById(id).populate('naav');
 
     if (
       user.role === 'admin' ||
-      booking.user._id.toString() === user.toString() ||
-      booking.naav.user.toString() === user.toString()
+      booking.user.toString() === user.data ||
+      booking.naav.user.toString() === user.data
     ) {
       if (status === 'Cancelled')
-        if (isNaavik) {
-          return res.status(401).json({ message: 'Unauthorized' });
-        }
+        if (isNaavik || booking.status !== 'Reserved')
+          return res.status(406).json({ message: 'Unauthorized' });
+
       if (status === 'Declined')
-        if (isCustomer) {
-          return res.status(401).json({ message: 'Unauthorized' });
-        }
+        if (isCustomer || booking.status !== 'Reserved')
+          return res.status(406).json({ message: 'Unauthorized' });
 
       if (status === 'Confirmed')
-        if (isCustomer) {
-          return res.status(401).json({ message: 'Unauthorized' });
-        }
+        if (isCustomer || booking.status !== 'Reserved')
+          return res.status(406).json({ message: 'Unauthorized' });
 
       if (status === 'Completed')
-        if (isNaavik) {
-          return res.status(401).json({ message: 'Unauthorized' });
-        }
+        if (isNaavik || !['Ongoing', 'Confirmed'].includes(booking.status))
+          return res.status(406).json({ message: 'Unauthorized' });
 
       if (status === 'Ongoing')
-        if (isNaavik) {
-          return res.status(401).json({ message: 'Unauthorized' });
-        }
+        if (isNaavik || booking.status !== 'Confirmed')
+          return res.status(406).json({ message: 'Unauthorized' });
 
       if (status === 'Refunded')
-        if (!isAdmin) {
-          return res.status(401).json({ message: 'Unauthorized' });
-        }
+        if (booking.status !== 'Declined' || !isAdmin)
+          return res.status(406).json({ message: 'Unauthorized' });
+
+      if (status === 'PartiallyRefunded')
+        if (booking.status !== 'Cancelled' || !isAdmin)
+          return res.status(406).json({ message: 'Unauthorized' });
 
       const updatedBooking = await Booking.findByIdAndUpdate(
         id,
@@ -257,7 +257,7 @@ class BookingController {
       );
       return res.json(updatedBooking);
     }
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(406).json({ message: 'Unauthorized' });
   }
 }
 

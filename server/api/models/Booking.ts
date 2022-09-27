@@ -35,6 +35,16 @@ const bookingSchema = new Schema({
   },
   status: {
     type: String,
+    enum: [
+      'Cancelled',
+      'Declined',
+      'Confirmed',
+      'Completed',
+      'Ongoing',
+      'Refunded',
+      'PartiallyRefunded',
+      'Reserved',
+    ],
   },
   review: {
     type: Schema.Types.ObjectId,
