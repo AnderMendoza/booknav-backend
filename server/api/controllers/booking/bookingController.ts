@@ -68,13 +68,25 @@ class BookingController {
             ...(startTime && { startTime: { $gte: new Date(startTime) } }),
           }
         : {
-            user,
+            $or: [
+              { user: user },
+              {
+                $match: {
+                  'naav.user._id': user,
+                },
+              },
+            ],
             ...(startTime && { startTime: { $gte: new Date(startTime) } }),
           }
     )
       .populate('user')
-      .populate('naav');
-    res.json(bookings);
+      .populate({
+        path: 'naav',
+        populate: {
+          path: 'user',
+        },
+      });
+    res.status(200).json(bookings);
   }
 
   async add(req: Request, res: Response) {
@@ -250,11 +262,36 @@ class BookingController {
 
       const updatedBooking = await Booking.findByIdAndUpdate(
         id,
-        { status: status },
+        { status },
         {
           new: true,
         }
       );
+
+      const subscription = await Subscription.findOne({
+        user: booking.naav.user,
+      });
+      const userSub = await Subscription.findOne({
+        user: booking.user,
+      });
+
+      webpush.sendNotification(
+        subscription,
+        JSON.stringify({
+          title: 'Booking Update',
+          description: `Booking is ${status} for ${user.phone}`,
+          icon: booking.naav.pictures[0],
+        })
+      );
+      webpush.sendNotification(
+        userSub,
+        JSON.stringify({
+          title: 'Booking Update',
+          description: `Booking is ${status} for ${booking.naav.title}`,
+          icon: booking.naav.pictures[0],
+        })
+      );
+
       return res.json(updatedBooking);
     }
     return res.status(406).json({ message: 'Unauthorized' });

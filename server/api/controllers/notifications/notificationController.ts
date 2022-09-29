@@ -10,7 +10,7 @@ class NotificationController {
       : res.locals?.user?.data;
 
     const existingSubscription = await Subscription.findOne({
-      user: user._id,
+      user,
     });
 
     if (existingSubscription) {
