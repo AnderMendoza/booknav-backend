@@ -237,7 +237,7 @@ class BookingController {
           return res.status(406).json({ message: 'Unauthorized' });
 
       if (status === 'Declined')
-        if (isCustomer || booking.status !== 'Reserved')
+        if (isCustomer || ['Reserved', 'Confirmed'].includes(booking.status))
           return res.status(406).json({ message: 'Unauthorized' });
 
       if (status === 'Confirmed')
@@ -245,12 +245,12 @@ class BookingController {
           return res.status(406).json({ message: 'Unauthorized' });
 
       if (status === 'Completed')
-        if (isNaavik || !['Ongoing', 'Confirmed'].includes(booking.status))
+        if (isNaavik || !['Confirmed'].includes(booking.status))
           return res.status(406).json({ message: 'Unauthorized' });
 
-      if (status === 'Ongoing')
-        if (isNaavik || booking.status !== 'Confirmed')
-          return res.status(406).json({ message: 'Unauthorized' });
+      // if (status === 'Ongoing')
+      //   if (isNaavik || booking.status !== 'Confirmed')
+      //     return res.status(406).json({ message: 'Unauthorized' });
 
       if (status === 'Refunded')
         if (booking.status !== 'Declined' || !isAdmin)
