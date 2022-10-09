@@ -1,5 +1,5 @@
+<br />
 <h2 align="center">Booknaav Backend</h2>
-
   <p align="center">
     Backend for booknaav app in typescipt
     <br />
@@ -8,7 +8,6 @@
     ·
     <a href="https://github.com/Booknav/booknav-backend/issues/new?assignees=&labels=feature&template=feature_request.md&title=">Request feature</a>
   </p>
-  <p align="center">
 
 ## Quick Start
 
