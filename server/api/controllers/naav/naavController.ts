@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import Review from '../../models/Review';
 import cloudinary from '../../middlewares/cloudinary';
 import Naav from '../../models/Naav';
+import Booking from '../../../api/models/Booking';
 
 export class NaavController {
   async getById(req: Request, res: Response) {
@@ -143,6 +144,16 @@ export class NaavController {
         ? res.locals?.user?.data.data
         : res.locals?.user?.data;
 
+      const bookings = await Booking.find({
+        user: req.body.user,
+        status: 'Completed',
+      });
+
+      if (!bookings.length)
+        return res
+          .status(400)
+          .send({ message: 'You have not booked any naav' });
+
       const review = await Review.create(req.body);
       const naav = await Naav.findByIdAndUpdate(id, {
         $push: {
@@ -152,6 +163,32 @@ export class NaavController {
       return res.json(naav);
     } catch (error) {
       return res.status(400).send({ message: 'Unable to review naav' });
+    }
+  }
+
+  async deleteReview(req: Request, res: Response) {
+    try {
+      const user = res.locals?.user?.data.data
+        ? res.locals?.user?.data
+        : res.locals?.user;
+
+      if (user.role !== 'admin')
+        return res
+          .status(400)
+          .send({ message: 'You are not authorized to delete review' });
+
+      const { id, reviewId } = req.params;
+
+      await Review.findByIdAndDelete(reviewId);
+
+      const naav = await Naav.findByIdAndUpdate(id, {
+        $pull: {
+          reviews: reviewId,
+        },
+      });
+      return res.json(naav);
+    } catch (error) {
+      return res.status(400).send({ message: 'Unable to delete review' });
     }
   }
 }
