@@ -5,6 +5,7 @@ import bookingRouter from './api/controllers/booking/bookingRouter';
 import ghatRouter from './api/controllers/ghat/ghatRouter';
 import naavRouter from './api/controllers/naav/naavRouter';
 import notificationRouter from './api/controllers/notifications/notificationRouter';
+import taxRouter from './api/controllers/tax/taxRouter';
 import userRouter from './api/controllers/user/userRouter';
 
 export default function routes(app: Application) {
@@ -15,4 +16,5 @@ export default function routes(app: Application) {
   app.use('/api/v1/bank', bankRouter);
   app.use('/api/v1/booking', bookingRouter);
   app.use('/api/v1/notification', notificationRouter);
+  app.use('/api/v1/tax', taxRouter);
 }
