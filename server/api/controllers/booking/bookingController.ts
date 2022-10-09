@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import Razorpay from 'razorpay';
 import { checkAvailableBooking } from './utils';
 import Subscription from '../../models/Subscription';
+import Tax from '../../models/Tax';
 import webpush from 'web-push';
 
 const razorpayInstance = new Razorpay({
@@ -91,18 +92,22 @@ class BookingController {
 
   async add(req: Request, res: Response) {
     const naav = await Naav.findById(req.body.naav);
-    const amount = naav.price[req.body.rideType] * 100; //paise
+    const tax = await Tax.find();
     const available = await checkAvailableBooking({
       startTime: req.body.startTime,
       naav,
     });
+
+    const serviceCharge = tax[0].serviceChargePercent / 100;
+    const total = naav.price[req.body.rideType];
+    const amount = total + total * serviceCharge;
     if (!available)
       return res.status(400).json({ message: 'Naav is not available' });
 
     const orderOptions = {
-      amount: amount,
+      amount,
       currency: 'INR',
-      receipt: naav.title + '_' + req.body.startTime,
+      receipt: naav.title + '_' + req.body.startTime.toString().slice(0, 10),
       payment_capture: 0,
     };
 
@@ -128,6 +133,7 @@ class BookingController {
         startTime: req.body.startTime,
         naav,
       });
+
       if (!available)
         return res.status(400).json({ message: 'Naav is not available' });
 
