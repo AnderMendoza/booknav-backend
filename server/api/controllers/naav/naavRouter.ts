@@ -26,4 +26,9 @@ export default express
     upload.single('picture'),
     naavController.add
   )
-  .put('/:id/review', isAuthenticated, naavController.review);
+  .put('/:id/review', isAuthenticated, naavController.review)
+  .delete(
+    '/:id/review/:reviewId',
+    isAuthenticated,
+    naavController.deleteReview
+  );
