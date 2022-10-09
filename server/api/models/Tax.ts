@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const Tax = new Schema({
+const TaxSchema = new Schema({
   serviceChargePercent: {
     type: Number,
     required: true,
@@ -13,6 +13,6 @@ const Tax = new Schema({
   },
 });
 
-const ServiceCharge = mongoose.model('tax', Tax);
+const Tax = mongoose.model('tax', TaxSchema);
 
-export default ServiceCharge;
+export default Tax;
