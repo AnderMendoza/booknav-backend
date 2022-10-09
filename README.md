@@ -1,6 +1,14 @@
-# booknaav-backend
+<h2 align="center">Booknaav Backend</h2>
 
-backend for booknaav app in typescipt
+  <p align="center">
+    Backend for booknaav app in typescipt
+    <br />
+    <br />
+    <a href="https://github.com/Booknav/booknav-backend/issues/new?assignees=&labels=feature&template=bug_report.md&title=">Report a Bug</a>
+    ·
+    <a href="https://github.com/Booknav/booknav-backend/issues/new?assignees=&labels=feature&template=feature_request.md&title=">Request feature</a>
+  </p>
+  <p align="center">
 
 ## Quick Start
 
